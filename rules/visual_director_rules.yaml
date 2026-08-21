@@ -1,0 +1,23 @@
+version: 1
+continuity:
+  character:
+    lock: [silhouette, proportions, face_markers, costume, palette]
+    change_requires: story_evidence
+  prop:
+    lock: [shape, scale, material, palette]
+  style:
+    lock: [line, color, texture, lighting]
+staging:
+  priorities: [story_clarity, emotional_focus, continuity, visual_variety]
+  max_primary_subjects: 3
+  require_clear_focal_point: true
+shots:
+  establish_before_detail: true
+  avoid_repeated_composition: true
+  preserve_screen_direction: true
+motion:
+  principle: restrained_and_purposeful
+  max_simultaneous_actions: 2
+  camera_motion_requires: narrative_reason
+review:
+  require_human_review_for: [identity_change, chronology_ambiguity, unsupported_style_change]

@@ -1,0 +1,22 @@
+id: warm_handdraw_story_v1
+name: Warm Hand-drawn Story
+version: 1
+line:
+  medium: pencil_and_ink
+  quality: slightly_irregular
+  weight: medium
+color:
+  palette: warm_muted
+  saturation: low_to_medium
+  contrast: gentle
+texture:
+  paper_grain: visible
+  fill: dry_brush
+lighting:
+  softness: soft
+  temperature: warm
+motion:
+  cadence: calm
+  easing: organic
+constraints:
+  avoid: [photorealism, neon_palette, glossy_3d, perfect_vector_lines]

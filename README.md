@@ -1,1 +1,42 @@
 # sayelf-handdraw-story
+
+A schema-first Codex skill for turning stories into consistent hand-drawn video plans.
+
+## Status
+
+`v0.1.0` maintenance candidate. The repository defines planning contracts and visual-direction rules; it does not contain image generation, video rendering, or publishing runtimes.
+
+## Repository contract
+
+- `SKILL.md` — skill entry point and frozen product boundary.
+- `schemas/` — JSON Schema contracts for project planning data.
+- `rules/visual_director_rules.yaml` — continuity and staging rules.
+- `styles/warm_handdraw_story_v1.yaml` — bundled style profile.
+- `scripts/validate_repository.py` — dependency-free repository validation.
+- `core/continuity.mjs` — deterministic project, reference, timeline, and continuity checks.
+- `interfaces/cli/index.mjs` — local `validate` and `continuity` commands.
+- `examples/story-sequence/` — two consecutive project snapshots.
+- `tests/` — Node built-in regression tests.
+- `docs/validation/DAY30_REVIEW.md` — evidence-based maintenance review.
+
+## Validate
+
+```text
+python scripts/validate_repository.py
+```
+
+The command checks that every required artifact exists, JSON Schemas parse and declare Draft 2020-12, YAML assets contain their required top-level keys, and the skill entry point has valid frontmatter.
+
+Run the executable continuity tests with Node.js 20 or newer:
+
+```text
+npm test
+npm run validate:example
+npm run continuity:example
+```
+
+`validate` reports broken identifiers, references, and timeline ranges. `continuity` additionally compares stable character, prop, style, scene-location, and scene-time fields with a previous snapshot. A report is either `PASS` or `REVISE`; the CLI exits with code `2` for a revision request.
+
+## Frozen boundary
+
+Allowed in `v0.1.x`: bug fixes, schema corrections, tests, validation evidence, and documentation. New renderers, providers, editing surfaces, platforms, and workflow layers require a separately validated version proposal.

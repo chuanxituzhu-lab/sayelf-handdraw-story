@@ -1,0 +1,13 @@
+{
+  "version": "0.1.0",
+  "story": {"title":"The Paper Boat","source":"A child launches a paper boat.","beats":[{"id":"beat-1","summary":"The boat is launched","purpose":"setup"},{"id":"beat-2","summary":"The boat enters the current","purpose":"development"}]},
+  "style": {"id":"warm_handdraw_story_v1","lighting":{"softness":"soft"},"texture":{"paper_grain":"visible"},"color":{"palette":"warm_muted"},"line":{"medium":"pencil_and_ink"}},
+  "characters": [{"id":"child","name":"Mina","visual_identity":{"palette":["mustard","navy"],"costume":"yellow raincoat","silhouette":"small figure with round hat"}}],
+  "props": [{"id":"boat","name":"Paper boat","visual_identity":{"material":"white paper","shape":"single-fold paper boat","palette":["ivory"],"scale":"hand-sized"}}],
+  "relations": [],
+  "scenes": [{"id":"riverbank","beat_ids":["beat-1","beat-2"],"location":"quiet riverbank","time_of_day":"late afternoon","characters":["child"],"props":["boat"],"shot_ids":["shot-2"]}],
+  "shots": [{"id":"shot-2","scene_id":"riverbank","size":"wide","duration":5,"visual_intent":"The current carries the boat away","subject_ids":["boat"],"frame_ids":["frame-2"],"motion_ids":["motion-2"]}],
+  "frames": [{"id":"frame-2","shot_id":"shot-2","time":0,"composition":"Boat follows the river from left to right","subjects":["boat"]}],
+  "motions": [{"id":"motion-2","shot_id":"shot-2","target":"boat","action":"follow the current right","start":0,"duration":5,"easing":"organic","narrative_reason":"continue the established travel direction"}],
+  "visual_evidence": []
+}

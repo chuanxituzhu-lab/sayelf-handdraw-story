@@ -1,0 +1,13 @@
+{
+  "version": "0.1.0",
+  "story": {"title":"The Paper Boat","source":"A child launches a paper boat.","beats":[{"id":"beat-1","summary":"The boat is launched","purpose":"setup"}]},
+  "style": {"id":"warm_handdraw_story_v1","line":{"medium":"pencil_and_ink"},"color":{"palette":"warm_muted"},"texture":{"paper_grain":"visible"},"lighting":{"softness":"soft"}},
+  "characters": [{"id":"child","name":"Mina","visual_identity":{"silhouette":"small figure with round hat","costume":"yellow raincoat","palette":["mustard","navy"]}}],
+  "props": [{"id":"boat","name":"Paper boat","visual_identity":{"shape":"single-fold paper boat","scale":"hand-sized","material":"white paper","palette":["ivory"]}}],
+  "relations": [],
+  "scenes": [{"id":"riverbank","beat_ids":["beat-1"],"location":"quiet riverbank","time_of_day":"late afternoon","characters":["child"],"props":["boat"],"shot_ids":["shot-1"]}],
+  "shots": [{"id":"shot-1","scene_id":"riverbank","size":"medium","duration":4,"visual_intent":"Mina releases the boat","subject_ids":["child","boat"],"frame_ids":["frame-1"],"motion_ids":["motion-1"]}],
+  "frames": [{"id":"frame-1","shot_id":"shot-1","time":0,"composition":"Mina kneels at frame left","subjects":["child","boat"]}],
+  "motions": [{"id":"motion-1","shot_id":"shot-1","target":"boat","action":"drift gently right","start":1,"duration":3,"easing":"organic","narrative_reason":"the launch begins the journey"}],
+  "visual_evidence": []
+}

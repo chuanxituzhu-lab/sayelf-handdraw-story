@@ -1,0 +1,18 @@
+{
+  "name": "sayelf-handdraw-story",
+  "version": "0.1.0",
+  "description": "Schema-first continuity planning for hand-drawn story videos.",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "sayelf-handdraw": "./interfaces/cli/index.mjs"
+  },
+  "scripts": {
+    "test": "node --test",
+    "validate:example": "node interfaces/cli/index.mjs validate examples/story-sequence/shot-01.json",
+    "continuity:example": "node interfaces/cli/index.mjs continuity examples/story-sequence/shot-02.json --previous examples/story-sequence/shot-01.json"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
