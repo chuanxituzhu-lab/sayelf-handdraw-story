@@ -7,6 +7,7 @@ import { compareContinuity, validateProject } from '../../core/continuity.mjs';
 import { beginHarnessConnection, confirmHarnessConnection, listHarnesses, runHarness } from '../../core/harness/registry.mjs';
 import { applyHarnessResult, buildHarnessPrompt, createWorkspace, workspaceView } from '../../core/workspace.mjs';
 import { closeLiveSession, createLiveSession, getLiveSession, sendLiveMessage, subscribeLiveSession } from '../../core/live-session.mjs';
+import { tryLocalAssist } from '../../core/local-assist.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC = path.join(HERE, 'public');
@@ -78,6 +79,8 @@ async function route(request, response) {
     const workspace = WORKSPACES.get(payload.workspaceId);
     if (!workspace) return json(response, 404, { status: 'ERROR', error: 'Workspace not found' });
     const language = payload.language === 'en' ? 'en' : 'zh';
+    const local = tryLocalAssist(workspace, payload.message, language);
+    if (local) return json(response, 200, applyHarnessResult(workspace, payload.message, local, language));
     const prompt = buildHarnessPrompt(workspace, payload.message, language);
     const result = await runHarness(payload.harnessId, { prompt, language, context: { workspaceId: workspace.id } });
     return json(response, 200, applyHarnessResult(workspace, payload.message, result, language));

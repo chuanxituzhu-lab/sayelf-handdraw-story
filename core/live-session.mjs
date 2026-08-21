@@ -1,6 +1,7 @@
 import { applyHarnessResult, buildHarnessPrompt } from './workspace.mjs';
 import { streamHarness } from './harness/registry.mjs';
 import crypto from 'node:crypto';
+import { tryLocalAssist } from './local-assist.mjs';
 
 const SESSIONS = new Map();
 
@@ -34,6 +35,8 @@ export function closeLiveSession(session) {
 
 async function runTurn(session, message) {
   emit(session, 'user', { text: message });
+  const local = tryLocalAssist(session.workspace, message, session.language);
+  if (local) { emit(session, 'status', { state: 'local' }); emit(session, 'complete', applyHarnessResult(session.workspace, message, local, session.language)); return; }
   const history = session.workspace.messages.slice(-10).map((item) => `${item.role}: ${item.text}`).join('\n');
   const prompt = `${buildHarnessPrompt(session.workspace, message, session.language)}\n\nRecent conversation (use only as context):\n${history}`;
   emit(session, 'turn-start', { message });

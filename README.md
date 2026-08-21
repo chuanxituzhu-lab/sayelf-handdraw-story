@@ -53,4 +53,6 @@ Built-in plugin manifests live in `plugins/harness/`. Additional trusted manifes
 
 Connected CLI harnesses also support live sessions. The WebUI keeps an SSE event stream open for incremental assistant output, sends follow-up user messages to the same session, and applies each completed turn to the hidden workspace. The raw session endpoints are `/api/live-sessions`, `/api/live-sessions/:id/events`, and `/api/live-sessions/:id/messages`.
 
+The WebUI uses a local-first assistant for deterministic requests such as continuity checks, project status, and preview-state queries. These requests are answered by the local validator and do not consume model tokens; creative story changes still go to the selected Harness.
+
 Allowed in `v0.1.x`: bug fixes, schema corrections, tests, validation evidence, and documentation. New renderers, providers, editing surfaces, platforms, and workflow layers require a separately validated version proposal.
