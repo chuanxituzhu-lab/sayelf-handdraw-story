@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#eee4d4"><title>Sayelf · AI 图片故事工作台</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="media.css"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#eee4d4"><title>Sayelf · AI 图片故事工作台</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="media.css"><link rel="stylesheet" href="preview.css"></head>
 <body>
   <div class="grain"></div>
   <div class="app-shell">
@@ -44,6 +44,11 @@
         <dl><div><dt data-i18n="characters">角色</dt><dd id="characters">—</dd></div><div><dt data-i18n="style">风格</dt><dd id="style">—</dd></div><div><dt data-i18n="scenes">场景</dt><dd id="scenes">0</dd></div><div><dt data-i18n="shots">镜头</dt><dd id="shots">0</dd></div></dl>
         <div class="continuity-status"><span id="status-dot"></span><div><small>CONTINUITY</small><strong id="project-status">PASS</strong></div></div>
       </div>
+      <section class="preview-panel" id="preview-panel">
+        <div class="preview-panel-head"><div><p class="eyebrow">MEDIA PREVIEW</p><h3 data-i18n="previewTitle">图片 / 视频预览</h3></div><span id="preview-count">0</span></div>
+        <div class="preview-empty" id="preview-empty"><span>◌</span><p data-i18n="previewEmpty">生成图片或视频后会显示在这里</p></div>
+        <div class="preview-grid hidden" id="preview-grid"></div>
+      </section>
       <section class="how-it-works"><h3 data-i18n="flowTitle">后台工作流</h3><ol><li><span>1</span><p data-i18n="flow1">自然语言进入所选 Harness</p></li><li><span>2</span><p data-i18n="flow2">服务端生成并验证隐藏 JSON</p></li><li><span>3</span><p data-i18n="flow3">只将安全摘要返回界面</p></li></ol></section>
     </aside>
   </div>
