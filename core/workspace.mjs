@@ -43,9 +43,10 @@ export function applyHarnessResult(workspace, userMessage, result, language) {
   }
   const reply = data?.message || result.text || '';
   workspace.language = language === 'en' ? 'en' : 'zh';
-  workspace.messages.push({ role: 'user', text: userMessage }, { role: 'assistant', text: stripJsonBlock(reply) });
+  const media = Array.isArray(result.media) ? result.media : [];
+  workspace.messages.push({ role: 'user', text: userMessage }, { role: 'assistant', text: stripJsonBlock(reply), media });
   workspace.updatedAt = new Date().toISOString();
-  return { reply: stripJsonBlock(reply), projectAccepted, validation, workspace: workspaceView(workspace) };
+  return { reply: stripJsonBlock(reply), media, projectAccepted, validation, workspace: workspaceView(workspace) };
 }
 
 function stripJsonBlock(text) { return String(text || '').replace(/```json[\s\S]*?```/gi, '').trim(); }

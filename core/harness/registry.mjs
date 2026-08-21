@@ -154,17 +154,39 @@ function normalizeOutput(raw, format = 'text') {
       const wrapper = JSON.parse(text);
       const content = wrapper.message || wrapper.result || wrapper.response || text;
       const embedded = typeof content === 'string' ? extractJson(content) : null;
-      return { text: typeof content === 'string' ? content : text, data: wrapper.project ? wrapper : embedded || wrapper };
+      const data = wrapper.project ? wrapper : embedded || wrapper;
+      return { text: typeof content === 'string' ? content : text, data, media: extractMedia(wrapper) || extractMedia(data) };
     }
-    catch { return { text, data: null }; }
+    catch { return { text, data: null, media: extractMediaFromText(text) }; }
   }
-  return { text, data: extractJson(text) };
+  const data = extractJson(text);
+  return { text, data, media: extractMedia(data) || extractMediaFromText(text) };
 }
 function extractJson(text) {
   const match = text.match(/```json\s*([\s\S]*?)```/i);
   const candidate = match?.[1] || (text.trim().startsWith('{') ? text : null);
   if (!candidate) return null;
   try { return JSON.parse(candidate); } catch { return null; }
+}
+function extractMedia(value) {
+  if (!value || typeof value !== 'object') return null;
+  const candidates = value.media || value.assets || value.outputs || value.images || value.videos;
+  if (!Array.isArray(candidates)) return null;
+  const media = candidates.map((item) => typeof item === 'string' ? mediaItem(item) : item && mediaItem(item.url || item.src || item.uri, item.type || item.mimeType, item.alt || item.name)).filter(Boolean).slice(0, 8);
+  return media.length ? media : null;
+}
+function extractMediaFromText(text) {
+  const media = [];
+  for (const match of String(text).matchAll(/!\[[^\]]*\]\((https?:\/\/[^)]+)\)/gi)) media.push(mediaItem(match[1], 'image'));
+  for (const match of String(text).matchAll(/\b(https?:\/\/[^\s)]+\.(?:mp4|webm|mov)(?:\?[^\s)]*)?)\b/gi)) media.push(mediaItem(match[1], 'video'));
+  return media.length ? media.slice(0, 8) : null;
+}
+function mediaItem(url, declaredType, alt = '') {
+  if (typeof url !== 'string' || url.length > 2_000_000) return null;
+  let parsed; try { parsed = new URL(url); } catch { return null; }
+  if (!['http:', 'https:', 'data:'].includes(parsed.protocol) || (parsed.protocol === 'data:' && !/^data:(image|video)\//i.test(url))) return null;
+  const type = /^video/i.test(String(declaredType)) || /\.(mp4|webm|mov)(?:$|\?)/i.test(parsed.pathname) || /^data:video\//i.test(url) ? 'video' : 'image';
+  return { type, url, alt: String(alt || '') };
 }
 function setPath(target, dottedPath, value) {
   const parts = dottedPath.split('.'); let cursor = target;

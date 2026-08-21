@@ -4,7 +4,7 @@ A schema-first Codex skill for turning stories into consistent hand-drawn video 
 
 ## Status
 
-`v0.1.0` maintenance candidate. The repository defines planning contracts and visual-direction rules; it does not contain image generation, video rendering, or publishing runtimes.
+`v0.1.0` maintenance candidate. The repository defines planning contracts and visual-direction rules; image/video generation remains provider-side. The local WebUI can display provider-returned image and video previews without exposing hidden project JSON.
 
 ## Repository contract
 
@@ -37,7 +37,7 @@ npm run continuity:example
 npm run web
 ```
 
-Then open `http://127.0.0.1:4175`. The WebUI accepts natural-language story instructions; structured JSON stays inside the local server process.
+Then open `http://127.0.0.1:4175`. The WebUI accepts natural-language story instructions; structured JSON stays inside the local server process. If a Harness returns a `media` array, generated image previews and native video playback appear in the conversation.
 
 The default WebUI is now a bilingual natural-language workspace. Project JSON remains server-side and the browser receives only a validated summary. A local guide is always available; external AI harnesses are disabled until explicitly allowlisted:
 

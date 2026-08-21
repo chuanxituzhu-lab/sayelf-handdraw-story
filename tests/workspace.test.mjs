@@ -30,3 +30,18 @@ test('harness prompt includes a language contract and hidden context', () => {
   assert.match(prompt, /不要展示原始项目 JSON/);
   assert.match(prompt, /The Paper Boat/);
 });
+
+test('workspace returns media previews without exposing project JSON', () => {
+  const workspace = createWorkspace('en');
+  const result = applyHarnessResult(workspace, 'draw a fox', {
+    text: 'Here is a preview',
+    media: [
+      { type: 'image', url: 'https://cdn.example.test/fox.png', alt: 'Fox' },
+      { type: 'video', url: 'https://cdn.example.test/fox.mp4', alt: 'Motion test' }
+    ],
+    data: null
+  }, 'en');
+  assert.equal(result.media.length, 2);
+  assert.deepEqual(result.workspace.messages.at(-1).media, result.media);
+  assert.equal('project' in result.workspace, false);
+});
