@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="zh-CN">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#eee4d4"><title>Sayelf · AI 图片故事工作台</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="media.css"><link rel="stylesheet" href="preview.css"></head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#eee4d4"><title>Sayelf · AI 图片故事工作台</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="media.css"><link rel="stylesheet" href="preview.css"><link rel="stylesheet" href="levels.css"></head>
 <body>
   <div class="grain"></div>
   <div class="app-shell">
     <aside class="sidebar">
-      <a class="brand" href="#"><span class="mark">S</span><span><strong>Sayelf</strong><small>Handdraw Story</small></span></a>
+      <a class="brand" id="brand" href="#"><span class="mark">S</span><span><strong>Sayelf</strong><small>Handdraw Story</small></span></a>
       <button class="new-story" id="new-story"><span>＋</span><b data-i18n="newStory">新建故事</b></button>
       <section class="side-section">
         <header><span data-i18n="harness">AI 辅助平台</span><button id="refresh-harnesses" title="Refresh">↻</button></header>
@@ -52,6 +52,7 @@
       <section class="how-it-works"><h3 data-i18n="flowTitle">后台工作流</h3><ol><li><span>1</span><p data-i18n="flow1">自然语言进入所选 Harness</p></li><li><span>2</span><p data-i18n="flow2">服务端生成并验证隐藏 JSON</p></li><li><span>3</span><p data-i18n="flow3">只将安全摘要返回界面</p></li></ol></section>
     </aside>
   </div>
+  <div class="level-overlay hidden" id="level-overlay" aria-hidden="true"><div class="level-card" role="dialog" aria-modal="true"><button class="level-back" id="level-back" type="button">← <span data-i18n="back">返回上一级</span></button><p class="eyebrow" id="level-eyebrow">NEXT LEVEL</p><h2 id="level-title">—</h2><p id="level-description"></p><div id="level-content"></div><button class="level-action" id="level-action" type="button">进入工作区</button></div></div>
   <div class="toast" id="toast"></div>
   <script type="module" src="app.js"></script>
 </body></html>
