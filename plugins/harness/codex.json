@@ -1,0 +1,1 @@
+{"id":"codex","order":10,"transport":"cli","command":"codex","args":["exec","--skip-git-repo-check","-"],"output":"text","timeoutMs":120000,"name":{"zh":"Codex","en":"Codex"},"description":{"zh":"通过本机 Codex CLI 执行故事规划","en":"Story planning through the local Codex CLI"},"capabilities":["assist","project-update"]}

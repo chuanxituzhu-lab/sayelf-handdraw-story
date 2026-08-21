@@ -78,6 +78,13 @@ def main() -> int:
         ROOT / "interfaces" / "web" / "public" / "app.js",
         ROOT / "tests" / "continuity.test.mjs",
         ROOT / "tests" / "web.test.mjs",
+        ROOT / "tests" / "harness.test.mjs",
+        ROOT / "tests" / "workspace.test.mjs",
+        ROOT / "core" / "harness" / "registry.mjs",
+        ROOT / "core" / "workspace.mjs",
+        ROOT / "plugins" / "harness" / "codex.json",
+        ROOT / "plugins" / "harness" / "claude-code.json",
+        ROOT / "plugins" / "harness" / "workbuddy.json",
         ROOT / "examples" / "story-sequence" / "shot-01.json",
         ROOT / "examples" / "story-sequence" / "shot-02.json",
     ]

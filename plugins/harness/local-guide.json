@@ -1,0 +1,1 @@
+{"id":"local-guide","order":1,"transport":"builtin","name":{"zh":"本地引导","en":"Local guide"},"description":{"zh":"无需 AI 的本地连接说明与安全占位","en":"Local connection guidance without an AI service"},"capabilities":["assist"]}

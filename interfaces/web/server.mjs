@@ -4,19 +4,23 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { compareContinuity, validateProject } from '../../core/continuity.mjs';
+import { listHarnesses, runHarness } from '../../core/harness/registry.mjs';
+import { applyHarnessResult, buildHarnessPrompt, createWorkspace, workspaceView } from '../../core/workspace.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC = path.join(HERE, 'public');
 const ROOT = path.resolve(HERE, '../..');
 const MAX_BODY = 1024 * 1024;
 const TYPES = new Map([['.html', 'text/html; charset=utf-8'], ['.css', 'text/css; charset=utf-8'], ['.js', 'text/javascript; charset=utf-8']]);
+const WORKSPACES = new Map();
 
 export function createWebServer() {
   return http.createServer(async (request, response) => {
     try { await route(request, response); }
     catch (error) {
-      if (error.code === 'BODY_TOO_LARGE') return json(response, 413, { status: 'ERROR', error: error.message });
-      if (error.code === 'INVALID_JSON') return json(response, 400, { status: 'ERROR', error: error.message });
+      if (error.code === 'BODY_TOO_LARGE') return json(response, 413, { status: 'ERROR', code: error.code, error: error.message });
+      if (error.code === 'INVALID_JSON') return json(response, 400, { status: 'ERROR', code: error.code, error: error.message });
+      if (error.code?.startsWith('HARNESS_')) return json(response, 422, { status: 'ERROR', code: error.code, error: error.message });
       json(response, 500, { status: 'ERROR', error: 'Unexpected local server error' });
     }
   });
@@ -25,6 +29,27 @@ export function createWebServer() {
 async function route(request, response) {
   const url = new URL(request.url, 'http://127.0.0.1');
   if (request.method === 'GET' && url.pathname === '/health') return json(response, 200, { status: 'ok', service: 'sayelf-handdraw-story-web' });
+  if (request.method === 'GET' && url.pathname === '/api/harnesses') return json(response, 200, { harnesses: await listHarnesses() });
+  if (request.method === 'POST' && url.pathname === '/api/workspaces') {
+    const payload = await body(request);
+    const workspace = createWorkspace(payload.language);
+    WORKSPACES.set(workspace.id, workspace);
+    return json(response, 201, workspaceView(workspace));
+  }
+  const workspaceMatch = url.pathname.match(/^\/api\/workspaces\/([a-f0-9-]+)$/);
+  if (request.method === 'GET' && workspaceMatch) {
+    const workspace = WORKSPACES.get(workspaceMatch[1]);
+    return workspace ? json(response, 200, workspaceView(workspace)) : json(response, 404, { status: 'ERROR', error: 'Workspace not found' });
+  }
+  if (request.method === 'POST' && url.pathname === '/api/assist') {
+    const payload = await body(request);
+    const workspace = WORKSPACES.get(payload.workspaceId);
+    if (!workspace) return json(response, 404, { status: 'ERROR', error: 'Workspace not found' });
+    const language = payload.language === 'en' ? 'en' : 'zh';
+    const prompt = buildHarnessPrompt(workspace, payload.message, language);
+    const result = await runHarness(payload.harnessId, { prompt, language, context: { workspaceId: workspace.id } });
+    return json(response, 200, applyHarnessResult(workspace, payload.message, result, language));
+  }
   if (request.method === 'GET' && url.pathname === '/api/examples') {
     const [previous, current] = await Promise.all([
       readJson(path.join(ROOT, 'examples/story-sequence/shot-01.json')),

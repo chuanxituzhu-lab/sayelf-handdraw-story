@@ -1,49 +1,52 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f3eadb">
-  <title>Sayelf · 图片故事连续性</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#eee4d4"><title>Sayelf · AI 图片故事工作台</title><link rel="stylesheet" href="styles.css"></head>
 <body>
-  <div class="grain" aria-hidden="true"></div>
-  <header class="topbar">
-    <a class="brand" href="#"><span class="mark">S</span><span><strong>Sayelf</strong><small>Handdraw Story</small></span></a>
-    <div class="version"><i></i> 本地运行 · v0.1.0</div>
-  </header>
-  <main>
-    <section class="hero">
-      <p class="eyebrow">STORY CONTINUITY DESK</p>
-      <h1>让每一帧，都记得<br><em>上一帧的故事。</em></h1>
-      <p class="lede">在生成下一张图片之前，检查角色、道具、风格和场景是否保持连续。所有数据仅在本机处理。</p>
-      <div class="sketch" aria-hidden="true"><span>01</span><i></i><span>02</span><i></i><span>∞</span></div>
-    </section>
-    <section class="workspace">
-      <div class="workspace-head"><div><p class="kicker">INPUT</p><h2>项目快照</h2></div><button class="button ghost" id="load-example">载入示例</button></div>
-      <div class="editors">
-        <article class="editor-card">
-          <div class="editor-title"><span class="number">01</span><div><h3>上一镜头</h3><p>连续性基准，可留空</p></div><label class="file-button">导入 JSON<input id="previous-file" type="file" accept=".json,application/json"></label></div>
-          <textarea id="previous" spellcheck="false" aria-label="上一镜头项目 JSON" placeholder="粘贴上一镜头的项目 JSON…"></textarea>
-          <div class="editor-foot"><span id="previous-state">等待输入</span><button class="text-button" data-clear="previous">清空</button></div>
-        </article>
-        <div class="flow" aria-hidden="true"><span>→</span></div>
-        <article class="editor-card current">
-          <div class="editor-title"><span class="number">02</span><div><h3>当前镜头</h3><p>需要验证的新项目快照</p></div><label class="file-button">导入 JSON<input id="current-file" type="file" accept=".json,application/json"></label></div>
-          <textarea id="current" spellcheck="false" aria-label="当前镜头项目 JSON" placeholder="粘贴当前镜头的项目 JSON…"></textarea>
-          <div class="editor-foot"><span id="current-state">等待输入</span><button class="text-button" data-clear="current">清空</button></div>
+  <div class="grain"></div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#"><span class="mark">S</span><span><strong>Sayelf</strong><small>Handdraw Story</small></span></a>
+      <button class="new-story" id="new-story"><span>＋</span><b data-i18n="newStory">新建故事</b></button>
+      <section class="side-section">
+        <header><span data-i18n="harness">AI 辅助平台</span><button id="refresh-harnesses" title="Refresh">↻</button></header>
+        <div class="harness-list" id="harness-list"></div>
+      </section>
+      <section class="side-section integrations">
+        <header><span data-i18n="plugins">插件能力</span></header>
+        <div class="chips"><span>CLI</span><span>HTTP API</span><span>MCP</span></div>
+        <p data-i18n="pluginHint">插件由本机服务端配置，密钥与命令不会进入浏览器。</p>
+      </section>
+      <div class="language"><button data-lang="zh" class="active">中文</button><button data-lang="en">English</button></div>
+    </aside>
+
+    <main class="chat-pane">
+      <header class="chat-head">
+        <div><p class="eyebrow">AI STORY CONTINUITY STUDIO</p><h1 data-i18n="title">图片故事连续性工作台</h1></div>
+        <div class="privacy"><i></i><span data-i18n="localOnly">本地工作区 · JSON 后台运行</span></div>
+      </header>
+      <div class="conversation" id="conversation">
+        <article class="message assistant welcome">
+          <div class="avatar">S</div>
+          <div class="bubble"><h2 data-i18n="welcomeTitle">从一个故事想法开始</h2><p data-i18n="welcomeText">描述人物、画面风格和接下来要发生的事情。我会把结构化项目保存在后台，并通过所选 AI Harness 协助规划连续镜头。</p><div class="suggestions"><button data-prompt-zh="一只戴红围巾的小狐狸，在雪地里寻找回家的路。请规划前两个镜头。" data-prompt-en="A little fox in a red scarf searches for home in the snow. Plan the first two shots." data-i18n="suggest1">规划故事开场</button><button data-prompt-zh="检查角色服装、色彩与行进方向是否连续。" data-prompt-en="Check character costume, color, and travel direction continuity." data-i18n="suggest2">检查连续性</button></div></div>
         </article>
       </div>
-      <div class="actions"><button class="button primary" id="run"><span>运行连续性检查</span><b>↗</b></button><p>当前镜头必填 · 上一镜头为空时自动执行结构验证</p></div>
-    </section>
-    <section class="results" id="results" aria-live="polite">
-      <div class="result-intro"><p class="kicker">REPORT</p><h2>检查报告</h2><p id="result-summary">载入示例并运行检查，报告会出现在这里。</p></div>
-      <div class="status-card idle" id="status-card"><div class="status-symbol" id="status-symbol">···</div><div><small>CONTINUITY STATUS</small><strong id="status-text">等待检查</strong></div></div>
-      <div class="issue-list" id="issue-list"></div>
-    </section>
-  </main>
-  <footer><span>Sayelf Handdraw Story</span><p>Local-first continuity planning · No data leaves this device</p></footer>
+      <form class="composer" id="composer">
+        <textarea id="message" rows="1" data-placeholder-zh="描述故事、调整镜头，或让 AI 检查连续性…" data-placeholder-en="Describe the story, adjust a shot, or ask AI to check continuity…" placeholder="描述故事、调整镜头，或让 AI 检查连续性…"></textarea>
+        <div class="composer-foot"><span id="selected-harness">Local guide</span><div><small data-i18n="sendHint">Enter 发送 · Shift+Enter 换行</small><button id="send" type="submit" aria-label="发送">↑</button></div></div>
+      </form>
+    </main>
+
+    <aside class="inspector">
+      <header><div><p class="eyebrow">BACKGROUND STATE</p><h2 data-i18n="projectState">后台项目状态</h2></div><span class="hidden-badge" data-i18n="jsonHidden">JSON 已隐藏</span></header>
+      <div class="empty-state" id="empty-state"><div class="orbit"><span>✦</span></div><h3 data-i18n="notCreated">尚未创建项目</h3><p data-i18n="notCreatedHint">AI 返回有效项目后，这里只展示便于阅读的摘要。</p></div>
+      <div class="project-summary hidden" id="project-summary">
+        <div class="project-title"><small data-i18n="story">故事</small><strong id="story-title">—</strong></div>
+        <dl><div><dt data-i18n="characters">角色</dt><dd id="characters">—</dd></div><div><dt data-i18n="style">风格</dt><dd id="style">—</dd></div><div><dt data-i18n="scenes">场景</dt><dd id="scenes">0</dd></div><div><dt data-i18n="shots">镜头</dt><dd id="shots">0</dd></div></dl>
+        <div class="continuity-status"><span id="status-dot"></span><div><small>CONTINUITY</small><strong id="project-status">PASS</strong></div></div>
+      </div>
+      <section class="how-it-works"><h3 data-i18n="flowTitle">后台工作流</h3><ol><li><span>1</span><p data-i18n="flow1">自然语言进入所选 Harness</p></li><li><span>2</span><p data-i18n="flow2">服务端生成并验证隐藏 JSON</p></li><li><span>3</span><p data-i18n="flow3">只将安全摘要返回界面</p></li></ol></section>
+    </aside>
+  </div>
+  <div class="toast" id="toast"></div>
   <script type="module" src="app.js"></script>
-</body>
-</html>
+</body></html>

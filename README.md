@@ -37,7 +37,15 @@ npm run continuity:example
 npm run web
 ```
 
-Then open `http://127.0.0.1:4175`. The WebUI accepts pasted JSON or local JSON files and never sends project data outside the local process.
+Then open `http://127.0.0.1:4175`. The WebUI accepts natural-language story instructions; structured JSON stays inside the local server process.
+
+The default WebUI is now a bilingual natural-language workspace. Project JSON remains server-side and the browser receives only a validated summary. A local guide is always available; external AI harnesses are disabled until explicitly allowlisted:
+
+```text
+SAYELF_HARNESS_ALLOW=codex,claude-code,workbuddy
+```
+
+Built-in plugin manifests live in `plugins/harness/`. Additional trusted manifests can be loaded with `SAYELF_PLUGIN_DIR`. Supported transports are shell-free CLI execution, HTTP APIs, and Streamable HTTP MCP. API keys are read from environment variables declared by server-side manifests and are never returned to the browser.
 
 `validate` reports broken identifiers, references, and timeline ranges. `continuity` additionally compares stable character, prop, style, scene-location, and scene-time fields with a previous snapshot. A report is either `PASS` or `REVISE`; the CLI exits with code `2` for a revision request.
 

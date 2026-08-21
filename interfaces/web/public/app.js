@@ -1,84 +1,26 @@
 const $ = (selector) => document.querySelector(selector);
-const previous = $('#previous');
-const current = $('#current');
-const run = $('#run');
-const card = $('#status-card');
-const issues = $('#issue-list');
+const translations = {
+  zh:{newStory:'新建故事',harness:'AI 辅助平台',plugins:'插件能力',pluginHint:'插件由本机服务端配置，密钥与命令不会进入浏览器。',title:'图片故事连续性工作台',localOnly:'本地工作区 · JSON 后台运行',welcomeTitle:'从一个故事想法开始',welcomeText:'描述人物、画面风格和接下来要发生的事情。我会把结构化项目保存在后台，并通过所选 AI Harness 协助规划连续镜头。',suggest1:'规划故事开场',suggest2:'检查连续性',sendHint:'Enter 发送 · Shift+Enter 换行',projectState:'后台项目状态',jsonHidden:'JSON 已隐藏',notCreated:'尚未创建项目',notCreatedHint:'AI 返回有效项目后，这里只展示便于阅读的摘要。',story:'故事',characters:'角色',style:'风格',scenes:'场景',shots:'镜头',flowTitle:'后台工作流',flow1:'自然语言进入所选 Harness',flow2:'服务端生成并验证隐藏 JSON',flow3:'只将安全摘要返回界面',disabled:'未启用',ready:'可用',thinking:'正在思考…',empty:'请输入故事或指令',error:'连接失败',newReady:'新的本地工作区已创建'},
+  en:{newStory:'New story',harness:'AI harnesses',plugins:'Plugin capabilities',pluginHint:'Plugins are configured on the local server. Keys and commands never enter the browser.',title:'Visual story continuity desk',localOnly:'Local workspace · JSON runs backstage',welcomeTitle:'Begin with a story idea',welcomeText:'Describe the characters, visual style, and what happens next. Structured project data stays backstage while the selected AI harness helps plan continuous shots.',suggest1:'Plan the opening',suggest2:'Check continuity',sendHint:'Enter to send · Shift+Enter for line break',projectState:'Backstage project state',jsonHidden:'JSON hidden',notCreated:'No project yet',notCreatedHint:'When AI returns a valid project, only a readable summary appears here.',story:'Story',characters:'Characters',style:'Style',scenes:'Scenes',shots:'Shots',flowTitle:'Backstage flow',flow1:'Natural language enters the selected harness',flow2:'Server creates and validates hidden JSON',flow3:'Only a safe summary returns to the UI',disabled:'Disabled',ready:'Ready',thinking:'Thinking…',empty:'Enter a story or instruction',error:'Connection failed',newReady:'A new local workspace is ready'}
+};
+let language = localStorage.getItem('sayelf-language') === 'en' ? 'en' : 'zh';
+let workspace; let harnesses=[]; let selected='local-guide';
 
-$('#load-example').addEventListener('click', loadExample);
-$('#previous-file').addEventListener('change', (event) => loadFile(event, previous));
-$('#current-file').addEventListener('change', (event) => loadFile(event, current));
-document.querySelectorAll('[data-clear]').forEach((button) => button.addEventListener('click', () => { $(`#${button.dataset.clear}`).value = ''; updateState(button.dataset.clear); }));
-[previous, current].forEach((editor) => editor.addEventListener('input', () => updateState(editor.id)));
-run.addEventListener('click', inspect);
-
-async function loadExample() {
-  busy(true, '正在载入…');
-  try {
-    const response = await fetch('/api/examples');
-    if (!response.ok) throw new Error('示例载入失败');
-    const data = await response.json();
-    previous.value = pretty(data.previous); current.value = pretty(data.current);
-    updateState('previous'); updateState('current');
-    show('idle', '···', '等待检查', '示例已载入。运行检查以确认两个镜头之间的连续性。');
-  } catch (error) { showError(error.message); }
-  finally { busy(false); }
-}
-
-async function loadFile(event, editor) {
-  const file = event.target.files[0];
-  if (!file) return;
-  try { editor.value = pretty(JSON.parse(await file.text())); updateState(editor.id); }
-  catch { setState(editor.id, 'JSON 无法解析', 'invalid'); }
-  event.target.value = '';
-}
-
-async function inspect() {
-  let before; let now;
-  try { now = parse(current, true); before = parse(previous, false); }
-  catch (error) { return showError(error.message); }
-  busy(true, '检查中…');
-  try {
-    const route = before ? '/api/continuity' : '/api/validate';
-    const payload = before ? { previous: before, current: now } : { project: now };
-    const response = await fetch(route, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
-    const report = await response.json();
-    if (!response.ok) throw new Error(report.error || '检查失败');
-    render(report, Boolean(before));
-  } catch (error) { showError(error.message); }
-  finally { busy(false); }
-}
-
-function render(report, compared) {
-  const problems = [...(report.drifts || []).map((item) => ({ ...item, message: '稳定视觉信息与上一镜头不一致' })), ...(report.validation?.issues || report.issues || [])];
-  const pass = report.status === 'PASS';
-  show(pass ? 'pass' : 'revise', pass ? '✓' : '!', pass ? '连续性通过' : '需要修订', pass ? (compared ? '当前镜头保持了角色、道具、风格与场景连续性，可以进入下一步。' : '当前项目的结构、引用和时间线有效。') : `发现 ${problems.length} 个需要处理的问题。`);
-  if (!problems.length) issues.innerHTML = '<div class="empty-report">没有发现漂移或结构问题。</div>';
-  else problems.forEach((problem) => issues.append(renderIssue(problem)));
-  $('#results').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function renderIssue(problem) {
-  const item = document.createElement('article'); item.className = 'issue';
-  const header = document.createElement('header'); const code = document.createElement('code'); const path = document.createElement('small'); const message = document.createElement('p');
-  code.textContent = problem.code || 'CONTINUITY'; path.textContent = problem.path || '$'; message.textContent = problem.message || '连续性信息发生变化';
-  header.append(code, path); item.append(header, message); return item;
-}
-
-function parse(editor, required) {
-  if (!editor.value.trim()) { if (required) throw new Error('请先输入当前镜头 JSON'); return null; }
-  try { return JSON.parse(editor.value); }
-  catch { throw new Error(`${editor === previous ? '上一镜头' : '当前镜头'} JSON 无法解析`); }
-}
-
-function updateState(id) {
-  const editor = $(`#${id}`);
-  if (!editor.value.trim()) return setState(id, '等待输入', '');
-  try { const value = JSON.parse(editor.value); setState(id, `JSON 有效 · ${value.story?.title || '未命名项目'}`, 'valid'); }
-  catch { setState(id, 'JSON 无法解析', 'invalid'); }
-}
-function setState(id, text, className) { const state = $(`#${id}-state`); state.textContent = text; state.className = className; }
-function show(kind, symbol, title, summary) { card.className = `status-card ${kind}`; $('#status-symbol').textContent = symbol; $('#status-text').textContent = title; $('#result-summary').textContent = summary; issues.replaceChildren(); }
-function showError(message) { show('error', '×', '无法检查', message); }
-function busy(value, label = '运行连续性检查') { run.disabled = value; run.querySelector('span').textContent = value ? label : '运行连续性检查'; }
-function pretty(value) { return JSON.stringify(value, null, 2); }
+boot();
+async function boot(){ applyLanguage(); await Promise.all([createWorkspace(),loadHarnesses()]); }
+async function createWorkspace(){ const response=await fetch('/api/workspaces',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({language})}); workspace=await response.json(); renderWorkspace(workspace); }
+async function loadHarnesses(){ try{const response=await fetch('/api/harnesses');harnesses=(await response.json()).harnesses; if(!harnesses.find(h=>h.id===selected&&h.enabled)) selected=harnesses.find(h=>h.enabled)?.id; renderHarnesses();}catch{toast(t().error);} }
+function renderHarnesses(){const list=$('#harness-list');list.replaceChildren();harnesses.forEach(h=>{const button=document.createElement('button');button.className=`harness ${h.id===selected?'selected':''} ${h.enabled?'':'disabled'}`;button.disabled=!h.enabled;button.innerHTML=`<span class="harness-icon">${h.name.en.slice(0,1)}</span><span><b>${escapeHtml(h.name[language]||h.name.en)}</b><small>${h.enabled?t().ready:t().disabled} · ${h.transport.toUpperCase()}</small></span><i></i>`;button.addEventListener('click',()=>{selected=h.id;renderHarnesses();$('#selected-harness').textContent=h.name[language]||h.name.en;});list.append(button);});const active=harnesses.find(h=>h.id===selected);$('#selected-harness').textContent=active?.name[language]||active?.name.en||'—';}
+function applyLanguage(){document.documentElement.lang=language==='zh'?'zh-CN':'en';document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t()[el.dataset.i18n]);document.querySelectorAll('[data-lang]').forEach(b=>b.classList.toggle('active',b.dataset.lang===language));$('#message').placeholder=$('#message').dataset[`placeholder${language==='zh'?'Zh':'En'}`];renderHarnesses();}
+document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>{language=b.dataset.lang;localStorage.setItem('sayelf-language',language);applyLanguage();}));
+$('#refresh-harnesses').addEventListener('click',loadHarnesses);
+$('#new-story').addEventListener('click',async()=>{await createWorkspace();document.querySelectorAll('.message:not(.welcome)').forEach(el=>el.remove());toast(t().newReady);});
+document.querySelectorAll('.suggestions button').forEach(b=>b.addEventListener('click',()=>{$('#message').value=b.dataset[language==='zh'?'promptZh':'promptEn'];$('#message').focus();}));
+$('#message').addEventListener('keydown',event=>{if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();$('#composer').requestSubmit();}});
+$('#composer').addEventListener('submit',async event=>{event.preventDefault();const message=$('#message').value.trim();if(!message)return toast(t().empty);if(!selected)return toast(t().error);addMessage('user',message);$('#message').value='';setBusy(true);try{const response=await fetch('/api/assist',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({workspaceId:workspace.id,harnessId:selected,message,language})});const data=await response.json();if(!response.ok)throw new Error(data.error);addMessage('assistant',data.reply||'—');workspace=data.workspace;renderWorkspace(workspace);if(data.validation?.status==='REVISE')toast(language==='zh'?'AI 返回的后台项目未通过验证，未保存。':'The AI project failed validation and was not saved.');}catch(error){addMessage('assistant',`${t().error}: ${error.message}`,'error');}finally{setBusy(false);}});
+function addMessage(role,text,extra=''){const article=document.createElement('article');article.className=`message ${role} ${extra}`;const avatar=document.createElement('div');avatar.className='avatar';avatar.textContent=role==='assistant'?'S':'你';const bubble=document.createElement('div');bubble.className='bubble';const paragraph=document.createElement('p');paragraph.textContent=text;bubble.append(paragraph);article.append(avatar,bubble);$('#conversation').append(article);article.scrollIntoView({behavior:'smooth',block:'end'});}
+function renderWorkspace(view){const summary=view?.summary;$('#empty-state').classList.toggle('hidden',Boolean(summary));$('#project-summary').classList.toggle('hidden',!summary);if(!summary)return;$('#story-title').textContent=summary.title||'—';$('#characters').textContent=summary.characters.join('、')||'—';$('#style').textContent=summary.style||'—';$('#scenes').textContent=summary.scenes;$('#shots').textContent=summary.shots;$('#project-status').textContent=summary.status;$('#status-dot').className=summary.status.toLowerCase();}
+function setBusy(value){$('#send').disabled=value;$('#send').textContent=value?'…':'↑';$('#selected-harness').textContent=value?t().thinking:(harnesses.find(h=>h.id===selected)?.name[language]||'—');}
+function toast(message){const el=$('#toast');el.textContent=message;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600);}
+function t(){return translations[language];}
+function escapeHtml(value){return String(value).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}

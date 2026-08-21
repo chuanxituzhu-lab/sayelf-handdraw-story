@@ -39,3 +39,17 @@ test('oversized bodies are rejected', () => fixture(async (base) => {
   const response = await fetch(`${base}/api/validate`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ project: { padding: 'x'.repeat(1024 * 1024) } }) });
   assert.equal(response.status, 413);
 }));
+
+test('WebUI creates a hidden workspace and talks to an enabled harness', () => fixture(async (base) => {
+  const created = await fetch(`${base}/api/workspaces`, { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({ language:'en' }) });
+  const workspace = await created.json();
+  assert.equal(created.status, 201);
+  assert.equal('project' in workspace, false);
+  const harnesses = await (await fetch(`${base}/api/harnesses`)).json();
+  assert.equal(harnesses.harnesses.find((item) => item.id === 'local-guide').enabled, true);
+  const response = await fetch(`${base}/api/assist`, { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({ workspaceId:workspace.id, harnessId:'local-guide', message:'help', language:'en' }) });
+  const result = await response.json();
+  assert.equal(response.status, 200);
+  assert.match(result.reply, /local guide/i);
+  assert.equal('project' in result.workspace, false);
+}));

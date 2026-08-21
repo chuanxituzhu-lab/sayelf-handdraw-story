@@ -16,6 +16,7 @@ Produce a deterministic planning package before any image or video generation.
 5. Record visual evidence for continuity decisions and human review.
 6. Validate every document against the matching file in `schemas/`.
 7. For a sequence, run `node interfaces/cli/index.mjs continuity <current.json> --previous <previous.json>` and resolve every reported drift before rendering.
+8. For guided planning, use the local WebUI; keep its structured project state backstage and expose only readable summaries to the user.
 
 Use `rules/visual_director_rules.yaml` for composition and continuity decisions. Use `styles/warm_handdraw_story_v1.yaml` only when a warm, tactile hand-drawn treatment matches the request.
 
@@ -27,3 +28,4 @@ Use `rules/visual_director_rules.yaml` for composition and continuity decisions.
 - Allow shot size, composition, visible subjects, and purposeful motion to change without treating them as identity drift.
 - Flag uncertain creative choices for human review instead of silently expanding the story.
 - Return planning data only. Rendering, model selection, publishing, and platform-specific export are outside this skill.
+- Treat Codex, Claude Code, WorkBuddy, and other AI tools as optional harness plugins; never make one provider part of the core contract.
