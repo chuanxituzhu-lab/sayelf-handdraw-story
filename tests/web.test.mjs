@@ -53,3 +53,17 @@ test('WebUI creates a hidden workspace and talks to an enabled harness', () => f
   assert.match(result.reply, /local guide/i);
   assert.equal('project' in result.workspace, false);
 }));
+
+test('external harnesses require human authorization confirmation before connection', () => fixture(async (base) => {
+  const started = await fetch(`${base}/api/harnesses/codex/connect`, { method: 'POST' });
+  assert.equal(started.status, 200);
+  const pending = await started.json();
+  assert.match(pending.authUrl, /^https:\/\//);
+  const before = await (await fetch(`${base}/api/harnesses`)).json();
+  assert.equal(before.harnesses.find((item) => item.id === 'codex').connected, false);
+  const confirmed = await fetch(`${base}/api/harnesses/codex/confirm`, { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({ connectionId: pending.connectionId }) });
+  assert.equal(confirmed.status, 200);
+  const result = await confirmed.json();
+  assert.equal(result.connected, true);
+  assert.equal(result.harnesses.find((item) => item.id === 'codex').enabled, true);
+}));

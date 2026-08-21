@@ -10,6 +10,8 @@ Enable non-builtin plugins with a comma-separated allowlist:
 SAYELF_HARNESS_ALLOW=codex,claude-code,workbuddy
 ```
 
+The WebUI also supports human-confirmed connections. Click a disconnected plugin, open its server-configured `authUrl` (Codex ships the official sign-in guide), finish the manual login or CLI authorization, then click “I finished authorization”. Only after that confirmation is the harness marked connected for the running server. A plugin can override its authorization page with `authUrlEnv`.
+
 Load additional manifests from `SAYELF_PLUGIN_DIR`. CLI commands execute without a shell. API credentials must be named by `authEnv` in the manifest and supplied through the server environment.
 
 ## Media previews

@@ -2,14 +2,36 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import crypto from 'node:crypto';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const BUILTIN_DIR = path.join(ROOT, 'plugins/harness');
 const MAX_OUTPUT = 2 * 1024 * 1024;
+const CONNECTED = new Set();
+const PENDING_CONNECTIONS = new Map();
 
 export async function listHarnesses(options = {}) {
   const plugins = await loadPlugins(options);
   return plugins.map((plugin) => publicPlugin(plugin, options));
+}
+
+export async function beginHarnessConnection(id, options = {}) {
+  const plugin = (await loadPlugins(options)).find((item) => item.id === id);
+  if (!plugin) throw coded('HARNESS_NOT_FOUND', `Unknown harness: ${id}`);
+  if (plugin.transport === 'builtin') throw coded('HARNESS_CONNECTION', 'Built-in guide does not need a connection');
+  const authUrl = connectionUrl(plugin);
+  if (!authUrl) throw coded('HARNESS_AUTH_URL', `No authorization URL configured for ${id}`);
+  const connectionId = crypto.randomUUID();
+  PENDING_CONNECTIONS.set(connectionId, { id, createdAt: Date.now() });
+  return { connectionId, id, authUrl };
+}
+
+export async function confirmHarnessConnection(connectionId, expectedId = '') {
+  const pending = PENDING_CONNECTIONS.get(connectionId);
+  if (!pending || Date.now() - pending.createdAt > 15 * 60 * 1000) throw coded('HARNESS_CONNECTION', 'Connection confirmation expired');
+  if (expectedId && pending.id !== expectedId) throw coded('HARNESS_CONNECTION', 'Connection does not match harness');
+  PENDING_CONNECTIONS.delete(connectionId); CONNECTED.add(pending.id);
+  return { id: pending.id, connected: true };
 }
 
 export async function runHarness(id, request, options = {}) {
@@ -57,7 +79,15 @@ function validateManifest(plugin, source) {
 function enabled(plugin, options) {
   if (plugin.transport === 'builtin') return true;
   const allow = String(options.allow || process.env.SAYELF_HARNESS_ALLOW || '').split(',').map((item) => item.trim()).filter(Boolean);
-  return allow.includes(plugin.id) || allow.includes('*');
+  return CONNECTED.has(plugin.id) || allow.includes(plugin.id) || allow.includes('*');
+}
+
+function connectionUrl(plugin) {
+  const envName = plugin.authUrlEnv || `SAYELF_${plugin.id.toUpperCase().replaceAll('-', '_')}_AUTH_URL`;
+  const value = process.env[envName] || plugin.authUrl;
+  if (!value) return null;
+  try { const url = new URL(value); return ['http:', 'https:'].includes(url.protocol) ? url.toString() : null; }
+  catch { return null; }
 }
 
 function publicPlugin(plugin, options) {
@@ -67,6 +97,8 @@ function publicPlugin(plugin, options) {
     description: plugin.description,
     transport: plugin.transport,
     enabled: enabled(plugin, options),
+    connected: plugin.transport === 'builtin' || CONNECTED.has(plugin.id),
+    authConfigured: Boolean(connectionUrl(plugin)),
     capabilities: plugin.capabilities || ['assist']
   };
 }

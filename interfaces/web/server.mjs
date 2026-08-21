@@ -4,7 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { compareContinuity, validateProject } from '../../core/continuity.mjs';
-import { listHarnesses, runHarness } from '../../core/harness/registry.mjs';
+import { beginHarnessConnection, confirmHarnessConnection, listHarnesses, runHarness } from '../../core/harness/registry.mjs';
 import { applyHarnessResult, buildHarnessPrompt, createWorkspace, workspaceView } from '../../core/workspace.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -30,6 +30,15 @@ async function route(request, response) {
   const url = new URL(request.url, 'http://127.0.0.1');
   if (request.method === 'GET' && url.pathname === '/health') return json(response, 200, { status: 'ok', service: 'sayelf-handdraw-story-web' });
   if (request.method === 'GET' && url.pathname === '/api/harnesses') return json(response, 200, { harnesses: await listHarnesses() });
+  const connectMatch = url.pathname.match(/^\/api\/harnesses\/([a-z0-9-]+)\/connect$/);
+  if (request.method === 'POST' && connectMatch) return json(response, 200, await beginHarnessConnection(connectMatch[1]));
+  const confirmMatch = url.pathname.match(/^\/api\/harnesses\/([a-z0-9-]+)\/confirm$/);
+  if (request.method === 'POST' && confirmMatch) {
+    const payload = await body(request);
+    if (!payload.connectionId) return json(response, 400, { status: 'ERROR', error: 'connectionId is required' });
+    const result = await confirmHarnessConnection(payload.connectionId, confirmMatch[1]);
+    return json(response, 200, { ...result, harnesses: await listHarnesses() });
+  }
   if (request.method === 'POST' && url.pathname === '/api/workspaces') {
     const payload = await body(request);
     const workspace = createWorkspace(payload.language);
