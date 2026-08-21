@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3eadb">
+  <title>Sayelf · 图片故事连续性</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="mark">S</span><span><strong>Sayelf</strong><small>Handdraw Story</small></span></a>
+    <div class="version"><i></i> 本地运行 · v0.1.0</div>
+  </header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">STORY CONTINUITY DESK</p>
+      <h1>让每一帧，都记得<br><em>上一帧的故事。</em></h1>
+      <p class="lede">在生成下一张图片之前，检查角色、道具、风格和场景是否保持连续。所有数据仅在本机处理。</p>
+      <div class="sketch" aria-hidden="true"><span>01</span><i></i><span>02</span><i></i><span>∞</span></div>
+    </section>
+    <section class="workspace">
+      <div class="workspace-head"><div><p class="kicker">INPUT</p><h2>项目快照</h2></div><button class="button ghost" id="load-example">载入示例</button></div>
+      <div class="editors">
+        <article class="editor-card">
+          <div class="editor-title"><span class="number">01</span><div><h3>上一镜头</h3><p>连续性基准，可留空</p></div><label class="file-button">导入 JSON<input id="previous-file" type="file" accept=".json,application/json"></label></div>
+          <textarea id="previous" spellcheck="false" aria-label="上一镜头项目 JSON" placeholder="粘贴上一镜头的项目 JSON…"></textarea>
+          <div class="editor-foot"><span id="previous-state">等待输入</span><button class="text-button" data-clear="previous">清空</button></div>
+        </article>
+        <div class="flow" aria-hidden="true"><span>→</span></div>
+        <article class="editor-card current">
+          <div class="editor-title"><span class="number">02</span><div><h3>当前镜头</h3><p>需要验证的新项目快照</p></div><label class="file-button">导入 JSON<input id="current-file" type="file" accept=".json,application/json"></label></div>
+          <textarea id="current" spellcheck="false" aria-label="当前镜头项目 JSON" placeholder="粘贴当前镜头的项目 JSON…"></textarea>
+          <div class="editor-foot"><span id="current-state">等待输入</span><button class="text-button" data-clear="current">清空</button></div>
+        </article>
+      </div>
+      <div class="actions"><button class="button primary" id="run"><span>运行连续性检查</span><b>↗</b></button><p>当前镜头必填 · 上一镜头为空时自动执行结构验证</p></div>
+    </section>
+    <section class="results" id="results" aria-live="polite">
+      <div class="result-intro"><p class="kicker">REPORT</p><h2>检查报告</h2><p id="result-summary">载入示例并运行检查，报告会出现在这里。</p></div>
+      <div class="status-card idle" id="status-card"><div class="status-symbol" id="status-symbol">···</div><div><small>CONTINUITY STATUS</small><strong id="status-text">等待检查</strong></div></div>
+      <div class="issue-list" id="issue-list"></div>
+    </section>
+  </main>
+  <footer><span>Sayelf Handdraw Story</span><p>Local-first continuity planning · No data leaves this device</p></footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

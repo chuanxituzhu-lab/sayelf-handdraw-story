@@ -15,6 +15,7 @@ A schema-first Codex skill for turning stories into consistent hand-drawn video 
 - `scripts/validate_repository.py` — dependency-free repository validation.
 - `core/continuity.mjs` — deterministic project, reference, timeline, and continuity checks.
 - `interfaces/cli/index.mjs` — local `validate` and `continuity` commands.
+- `interfaces/web/` — private local WebUI and JSON API using Node.js standard libraries.
 - `examples/story-sequence/` — two consecutive project snapshots.
 - `tests/` — Node built-in regression tests.
 - `docs/validation/DAY30_REVIEW.md` — evidence-based maintenance review.
@@ -33,7 +34,10 @@ Run the executable continuity tests with Node.js 20 or newer:
 npm test
 npm run validate:example
 npm run continuity:example
+npm run web
 ```
+
+Then open `http://127.0.0.1:4175`. The WebUI accepts pasted JSON or local JSON files and never sends project data outside the local process.
 
 `validate` reports broken identifiers, references, and timeline ranges. `continuity` additionally compares stable character, prop, style, scene-location, and scene-time fields with a previous snapshot. A report is either `PASS` or `REVISE`; the CLI exits with code `2` for a revision request.
 

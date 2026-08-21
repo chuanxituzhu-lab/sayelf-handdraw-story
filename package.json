@@ -9,6 +9,7 @@
   },
   "scripts": {
     "test": "node --test",
+    "web": "node interfaces/web/server.mjs",
     "validate:example": "node interfaces/cli/index.mjs validate examples/story-sequence/shot-01.json",
     "continuity:example": "node interfaces/cli/index.mjs continuity examples/story-sequence/shot-02.json --previous examples/story-sequence/shot-01.json"
   },

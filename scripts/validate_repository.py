@@ -72,7 +72,12 @@ def main() -> int:
         ROOT / "package.json",
         ROOT / "core" / "continuity.mjs",
         ROOT / "interfaces" / "cli" / "index.mjs",
+        ROOT / "interfaces" / "web" / "server.mjs",
+        ROOT / "interfaces" / "web" / "public" / "index.html",
+        ROOT / "interfaces" / "web" / "public" / "styles.css",
+        ROOT / "interfaces" / "web" / "public" / "app.js",
         ROOT / "tests" / "continuity.test.mjs",
+        ROOT / "tests" / "web.test.mjs",
         ROOT / "examples" / "story-sequence" / "shot-01.json",
         ROOT / "examples" / "story-sequence" / "shot-02.json",
     ]
