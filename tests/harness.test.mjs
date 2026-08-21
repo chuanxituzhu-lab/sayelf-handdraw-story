@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { listHarnesses, runHarness } from '../core/harness/registry.mjs';
 
 test('builtin guide is enabled while external harnesses require an allowlist', async () => {
@@ -18,7 +19,7 @@ test('disabled harness cannot execute', async () => {
 
 test('CLI plugins execute without a shell and normalize JSON output', async () => {
   const directory = await fs.mkdtemp(path.join(os.tmpdir(), 'sayelf-plugin-'));
-  const fixture = path.resolve('tests/fixtures/fake-harness.mjs');
+  const fixture = fileURLToPath(new URL('./fixtures/fake-harness.mjs', import.meta.url));
   await fs.writeFile(path.join(directory, 'fixture.json'), JSON.stringify({ id:'fixture-cli', transport:'cli', command:process.execPath, args:[fixture,'{{prompt}}'], output:'json', name:{zh:'测试',en:'Fixture'} }));
   try {
     const result = await runHarness('fixture-cli', { prompt: 'safe prompt' }, { pluginDir: directory, allow: 'fixture-cli' });
