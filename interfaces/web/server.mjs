@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { compareContinuity, validateProject } from '../../core/continuity.mjs';
 import { beginHarnessConnection, confirmHarnessConnection, listHarnesses, runHarness } from '../../core/harness/registry.mjs';
 import { applyHarnessResult, buildHarnessPrompt, createWorkspace, workspaceView } from '../../core/workspace.mjs';
+import { closeLiveSession, createLiveSession, getLiveSession, sendLiveMessage, subscribeLiveSession } from '../../core/live-session.mjs';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PUBLIC = path.join(HERE, 'public');
@@ -30,6 +31,28 @@ async function route(request, response) {
   const url = new URL(request.url, 'http://127.0.0.1');
   if (request.method === 'GET' && url.pathname === '/health') return json(response, 200, { status: 'ok', service: 'sayelf-handdraw-story-web' });
   if (request.method === 'GET' && url.pathname === '/api/harnesses') return json(response, 200, { harnesses: await listHarnesses() });
+  if (request.method === 'POST' && url.pathname === '/api/live-sessions') {
+    const payload = await body(request); const workspace = WORKSPACES.get(payload.workspaceId);
+    if (!workspace) return json(response, 404, { status: 'ERROR', error: 'Workspace not found' });
+    const session = createLiveSession({ workspace, harnessId: payload.harnessId, language: payload.language });
+    if (payload.message) sendLiveMessage(session, payload.message);
+    return json(response, 201, { sessionId: session.id, harnessId: session.harnessId });
+  }
+  const liveEvents = url.pathname.match(/^\/api\/live-sessions\/([a-f0-9-]+)\/events$/);
+  if (request.method === 'GET' && liveEvents) {
+    const session = getLiveSession(liveEvents[1]);
+    if (!session) return json(response, 404, { status: 'ERROR', error: 'Live session not found' });
+    response.writeHead(200, { 'content-type': 'text/event-stream; charset=utf-8', 'cache-control': 'no-cache', connection: 'keep-alive', 'x-accel-buffering': 'no' });
+    const send = (event) => { response.write(`id: ${event.id}\nevent: ${event.type}\ndata: ${JSON.stringify(event.payload)}\n\n`); if (event.type === 'closed') response.end(); };
+    const unsubscribe = subscribeLiveSession(session, send); request.on('close', unsubscribe); return;
+  }
+  const liveMessages = url.pathname.match(/^\/api\/live-sessions\/([a-f0-9-]+)\/messages$/);
+  if (request.method === 'POST' && liveMessages) {
+    const session = getLiveSession(liveMessages[1]); if (!session) return json(response, 404, { status: 'ERROR', error: 'Live session not found' });
+    const payload = await body(request); sendLiveMessage(session, payload.message); return json(response, 202, { accepted: true, sessionId: session.id });
+  }
+  const liveClose = url.pathname.match(/^\/api\/live-sessions\/([a-f0-9-]+)$/);
+  if (request.method === 'DELETE' && liveClose) { const session = getLiveSession(liveClose[1]); if (session) closeLiveSession(session); return json(response, 200, { closed: true }); }
   const connectMatch = url.pathname.match(/^\/api\/harnesses\/([a-z0-9-]+)\/connect$/);
   if (request.method === 'POST' && connectMatch) return json(response, 200, await beginHarnessConnection(connectMatch[1]));
   const confirmMatch = url.pathname.match(/^\/api\/harnesses\/([a-z0-9-]+)\/confirm$/);

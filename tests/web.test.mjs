@@ -67,3 +67,17 @@ test('external harnesses require human authorization confirmation before connect
   assert.equal(result.connected, true);
   assert.equal(result.harnesses.find((item) => item.id === 'codex').enabled, true);
 }));
+
+test('live session streams a two-way harness turn over SSE', () => fixture(async (base) => {
+  const created = await fetch(`${base}/api/workspaces`, { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({ language:'en' }) });
+  const workspace = await created.json();
+  const sessionResponse = await fetch(`${base}/api/live-sessions`, { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({ workspaceId: workspace.id, harnessId:'local-guide', language:'en' }) });
+  const session = await sessionResponse.json();
+  const controller = new AbortController();
+  const eventsResponse = await fetch(`${base}/api/live-sessions/${session.sessionId}/events`, { signal: controller.signal });
+  await fetch(`${base}/api/live-sessions/${session.sessionId}/messages`, { method:'POST', headers:{'content-type':'application/json'}, body:JSON.stringify({ message:'hello live' }) });
+  const reader = eventsResponse.body.getReader(); let text = '';
+  while (!text.includes('event: complete')) { const chunk = await reader.read(); if (chunk.done) break; text += Buffer.from(chunk.value).toString('utf8'); }
+  controller.abort();
+  assert.match(text, /event: complete/); assert.match(text, /local guide/i);
+}));

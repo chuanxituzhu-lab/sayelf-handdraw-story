@@ -48,6 +48,20 @@ export async function runHarness(id, request, options = {}) {
   throw coded('HARNESS_TRANSPORT', `Unsupported harness transport: ${plugin.transport}`);
 }
 
+export async function streamHarness(id, request, handlers = {}, options = {}) {
+  const plugin = (await loadPlugins(options)).find((item) => item.id === id);
+  if (!plugin) throw coded('HARNESS_NOT_FOUND', `Unknown harness: ${id}`);
+  if (!enabled(plugin, options)) throw coded('HARNESS_DISABLED', `Harness is not enabled: ${id}`);
+  const prompt = String(request.prompt || '').trim();
+  if (!prompt) throw coded('PROMPT_REQUIRED', 'Prompt is required');
+  if (plugin.transport !== 'cli') {
+    const result = await runHarness(id, request, options);
+    handlers.onComplete?.(result);
+    return { cancel() {} };
+  }
+  return runCliStream(plugin, prompt, handlers, options);
+}
+
 async function loadPlugins(options) {
   const directories = [BUILTIN_DIR];
   const external = options.pluginDir || process.env.SAYELF_PLUGIN_DIR;
@@ -122,6 +136,27 @@ async function runCli(plugin, prompt, options) {
     if (useStdin) child.stdin.end(prompt); else child.stdin.end();
     function finish(callback, value) { if (settled) return; settled = true; clearTimeout(timer); callback(value); }
   });
+}
+
+function runCliStream(plugin, prompt, handlers, options) {
+  const args = plugin.args.map((value) => value === '{{prompt}}' ? prompt : value);
+  const useStdin = !plugin.args.includes('{{prompt}}');
+  const timeoutMs = clamp(plugin.timeoutMs, 1000, options.maxTimeoutMs || 120000, 60000);
+  const cwd = path.resolve(options.cwd || ROOT);
+  let settled = false; let bytes = 0; const stdout = []; const stderr = [];
+  const child = spawn(plugin.command, args, { cwd, shell: false, windowsHide: true, env: process.env, stdio: ['pipe', 'pipe', 'pipe'] });
+  const timer = setTimeout(() => { child.kill(); finish(coded('HARNESS_TIMEOUT', `${plugin.id} exceeded ${timeoutMs} ms`)); }, timeoutMs);
+  const collect = (target, onChunk) => (chunk) => { bytes += chunk.length; if (bytes > MAX_OUTPUT) { child.kill(); finish(coded('HARNESS_OUTPUT_LIMIT', 'Harness output exceeds 2 MB')); return; } target.push(chunk); onChunk?.(chunk.toString('utf8')); };
+  child.stdout.on('data', collect(stdout, (chunk) => handlers.onChunk?.(chunk)));
+  child.stderr.on('data', collect(stderr, (chunk) => handlers.onStatus?.(chunk)));
+  child.on('error', (error) => finish(coded('HARNESS_START_FAILED', error.message)));
+  child.on('close', (code) => {
+    if (code !== 0) return finish(coded('HARNESS_FAILED', Buffer.concat(stderr).toString('utf8').trim() || `Harness exited with code ${code}`));
+    finish(null, normalizeOutput(Buffer.concat(stdout).toString('utf8'), plugin.output));
+  });
+  if (useStdin) child.stdin.end(prompt); else child.stdin.end();
+  return { cancel() { if (!settled) { child.kill(); finish(coded('HARNESS_CANCELLED', 'Harness stream cancelled')); } } };
+  function finish(error, result) { if (settled) return; settled = true; clearTimeout(timer); if (error) handlers.onError?.(error); else handlers.onComplete?.(result); }
 }
 
 async function runHttp(plugin, request, options) {
