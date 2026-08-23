@@ -17,3 +17,10 @@ test('local assist declines creative requests for the harness', () => {
   const workspace = createWorkspace('en'); workspace.project = project;
   assert.equal(tryLocalAssist(workspace, '把第二个镜头改成黄昏', 'en'), null);
 });
+
+test('local assist plans the fox opening offline', () => {
+  const workspace = createWorkspace('zh');
+  const result = tryLocalAssist(workspace, '一只戴红围巾的小狐狸，在雪地里寻找回家的路。请规划前两个镜头', 'zh');
+  assert.match(result.text, /镜头 1/);
+  assert.match(result.text, /镜头 2/);
+});

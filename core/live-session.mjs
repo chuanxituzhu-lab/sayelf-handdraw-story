@@ -45,7 +45,12 @@ async function runTurn(session, message) {
       onChunk: (text) => emit(session, 'delta', { text }),
       onStatus: () => emit(session, 'status', { state: 'working' }),
       onComplete: (result) => { const applied = applyHarnessResult(session.workspace, message, result, session.language); emit(session, 'complete', applied); resolve(); },
-      onError: (error) => { emit(session, 'error', { code: error.code || 'HARNESS_ERROR', message: error.message }); resolve(); }
+      onError: (error) => {
+        const fallback = tryLocalAssist(session.workspace, message, session.language);
+        if (fallback) { emit(session, 'status', { state: 'local-fallback' }); emit(session, 'complete', applyHarnessResult(session.workspace, message, fallback, session.language)); }
+        else emit(session, 'error', { code: error.code || 'HARNESS_ERROR', message: error.message });
+        resolve();
+      }
     }).then((controller) => { session.cancel = controller.cancel; }).catch((error) => { emit(session, 'error', { code: error.code || 'HARNESS_ERROR', message: error.message }); resolve(); });
   });
   session.cancel = null;

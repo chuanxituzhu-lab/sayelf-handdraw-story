@@ -123,7 +123,8 @@ async function runCli(plugin, prompt, options) {
   const timeoutMs = clamp(plugin.timeoutMs, 1000, options.maxTimeoutMs || 120000, 60000);
   const cwd = path.resolve(options.cwd || ROOT);
   return new Promise((resolve, reject) => {
-    const child = spawn(plugin.command, args, { cwd, shell: false, windowsHide: true, env: process.env, stdio: ['pipe', 'pipe', 'pipe'] });
+    const spec = commandSpec(plugin.command, args);
+    const child = spawn(spec.command, spec.args, { cwd, shell: false, windowsHide: true, env: process.env, stdio: ['pipe', 'pipe', 'pipe'] });
     const stdout = []; const stderr = []; let bytes = 0; let settled = false;
     const timer = setTimeout(() => { child.kill(); finish(reject, coded('HARNESS_TIMEOUT', `${plugin.id} exceeded ${timeoutMs} ms`)); }, timeoutMs);
     const collect = (target) => (chunk) => { bytes += chunk.length; if (bytes > MAX_OUTPUT) { child.kill(); finish(reject, coded('HARNESS_OUTPUT_LIMIT', 'Harness output exceeds 2 MB')); } else target.push(chunk); };
@@ -144,7 +145,8 @@ function runCliStream(plugin, prompt, handlers, options) {
   const timeoutMs = clamp(plugin.timeoutMs, 1000, options.maxTimeoutMs || 120000, 60000);
   const cwd = path.resolve(options.cwd || ROOT);
   let settled = false; let bytes = 0; const stdout = []; const stderr = [];
-  const child = spawn(plugin.command, args, { cwd, shell: false, windowsHide: true, env: process.env, stdio: ['pipe', 'pipe', 'pipe'] });
+  const spec = commandSpec(plugin.command, args);
+  const child = spawn(spec.command, spec.args, { cwd, shell: false, windowsHide: true, env: process.env, stdio: ['pipe', 'pipe', 'pipe'] });
   const timer = setTimeout(() => { child.kill(); finish(coded('HARNESS_TIMEOUT', `${plugin.id} exceeded ${timeoutMs} ms`)); }, timeoutMs);
   const collect = (target, onChunk) => (chunk) => { bytes += chunk.length; if (bytes > MAX_OUTPUT) { child.kill(); finish(coded('HARNESS_OUTPUT_LIMIT', 'Harness output exceeds 2 MB')); return; } target.push(chunk); onChunk?.(chunk.toString('utf8')); };
   child.stdout.on('data', collect(stdout, (chunk) => handlers.onChunk?.(chunk)));
@@ -279,3 +281,12 @@ function builtinGuide(_prompt, language) {
 }
 function coded(code, message) { const error = new Error(message); error.code = code; return error; }
 function clamp(value, min, max, fallback) { const number = Number(value); return Number.isFinite(number) ? Math.min(max, Math.max(min, number)) : fallback; }
+function resolveCommand(command) {
+  if (process.platform === 'win32' && command === 'codex') return 'codex.cmd';
+  return command;
+}
+function commandSpec(command, args) {
+  const resolved = resolveCommand(command);
+  if (process.platform === 'win32' && resolved.toLowerCase().endsWith('.cmd')) return { command: process.env.ComSpec || 'cmd.exe', args: ['/d', '/s', '/c', resolved, ...args] };
+  return { command: resolved, args };
+}
