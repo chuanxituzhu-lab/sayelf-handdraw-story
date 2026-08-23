@@ -37,6 +37,17 @@ npm run continuity:example
 npm run web
 ```
 
+## Use as an AI-platform plugin
+
+The repository includes a standard Codex plugin manifest at `.codex-plugin/plugin.json`. In Codex, install or link the repository as a local plugin through your configured local marketplace, then start a new thread so Codex loads `SKILL.md`. The skill provides the planning contract; the CLI provides deterministic validation:
+
+```text
+node interfaces/cli/index.mjs validate examples/story-sequence/shot-01.json
+node interfaces/cli/index.mjs continuity examples/story-sequence/shot-02.json --previous examples/story-sequence/shot-01.json
+```
+
+For Claude Code, point the project at the same `SKILL.md` and use the repository CLI. For WorkBuddy or another MCP-capable harness, keep the WebUI server as the local orchestration surface and register its trusted MCP/API adapter; provider credentials remain in the server environment. The core skill never depends on Codex, Claude Code, or WorkBuddy.
+
 Then open `http://127.0.0.1:4175`. The WebUI accepts natural-language story instructions; structured JSON stays inside the local server process. If a Harness returns a `media` array, generated image previews and native video playback appear in the conversation.
 
 The default WebUI is now a bilingual natural-language workspace. Project JSON remains server-side and the browser receives only a validated summary. A local guide is always available; external AI harnesses are disabled until explicitly allowlisted:

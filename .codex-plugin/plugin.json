@@ -1,0 +1,29 @@
+{
+  "name": "sayelf-handdraw-story",
+  "version": "0.1.0",
+  "description": "Plan and validate visually continuous hand-drawn story videos.",
+  "author": {
+    "name": "chuanxituzhu-lab",
+    "url": "https://github.com/chuanxituzhu-lab"
+  },
+  "homepage": "https://github.com/chuanxituzhu-lab/sayelf-handdraw-story",
+  "repository": "https://github.com/chuanxituzhu-lab/sayelf-handdraw-story",
+  "license": "MIT",
+  "keywords": ["storyboard", "hand-drawn", "continuity", "video-planning"],
+  "skills": "./SKILL.md",
+  "interface": {
+    "displayName": "Sayelf Handdraw Story",
+    "shortDescription": "Continuity-first hand-drawn story planning",
+    "longDescription": "Create and validate character-, style-, scene-, shot-, and motion-consistent plans before image or video generation.",
+    "developerName": "chuanxituzhu-lab",
+    "category": "Productivity",
+    "capabilities": ["Interactive", "Write"],
+    "websiteURL": "https://github.com/chuanxituzhu-lab/sayelf-handdraw-story",
+    "defaultPrompt": [
+      "Plan the opening shots for this hand-drawn story.",
+      "Check character and style continuity across these shots.",
+      "Revise this storyboard while preserving stable identities."
+    ],
+    "brandColor": "#B65740"
+  }
+}
