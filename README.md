@@ -4,7 +4,7 @@ A schema-first Codex skill for turning stories into consistent hand-drawn video 
 
 ## Status
 
-`v0.1.0` maintenance candidate. The repository defines planning contracts and visual-direction rules; image/video generation remains provider-side. The local WebUI can display provider-returned image and video previews without exposing hidden project JSON.
+`v0.1.0` Core contract + Storyleaf Lite 1.1.0 + optional Illustrator visual-director plugin. The repository defines planning contracts and visual-direction rules; image/video generation remains provider-side. The local WebUI can display provider-returned image and video previews without exposing hidden project JSON.
 
 ## Storyleaf Lite 1.1.0
 
