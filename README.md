@@ -6,6 +6,30 @@ A schema-first Codex skill for turning stories into consistent hand-drawn video 
 
 `v0.1.0` maintenance candidate. The repository defines planning contracts and visual-direction rules; image/video generation remains provider-side. The local WebUI can display provider-returned image and video previews without exposing hidden project JSON.
 
+## Storyleaf Lite 1.1.0
+
+`storyleaf/` 是面向普通用户的独立故事生成产品：输入一句灵感或一篇文章，按故事复杂度自动拆分连续帧；每张图片与一个视频分镜严格对应。它提供预览窗口、沉浸式手绘回放、人物与道具连续性锁、SVG/PNG 图片出口和视频分镜出口，并支持 9:16、3:4、16:9、1:1 画幅。
+
+- [打开故事生成器](storyleaf/一叶故事.html)
+- [产品 README](storyleaf/README.md)
+- [独立 Skill](storyleaf/storyleaf/SKILL.md)
+
+### 故事图片示范：最后一根稻草
+
+这组原创草图把一个故事拆成五个连续瞬间：负重前行 → 膝盖发颤 → 稻草落下 → 前腿弯曲 → 跪地余韵。图片和视频分镜使用同一组编号。
+
+| F001 · 负重前行 | F002 · 膝盖发颤 |
+|---|---|
+| ![F001 负重前行](storyleaf/完整Demo/独立草图/F001.svg) | ![F002 膝盖发颤](storyleaf/完整Demo/独立草图/F002.svg) |
+
+| F003 · 稻草落下 | F004 · 前腿弯曲 |
+|---|---|
+| ![F003 稻草落下](storyleaf/完整Demo/独立草图/F003.svg) | ![F004 前腿弯曲](storyleaf/完整Demo/独立草图/F004.svg) |
+
+| F005 · 跪地余韵 |
+|---|
+| ![F005 跪地余韵](storyleaf/完整Demo/独立草图/F005.svg) |
+
 ## Repository contract
 
 - `SKILL.md` — skill entry point and frozen product boundary.

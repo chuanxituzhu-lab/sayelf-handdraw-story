@@ -1,0 +1,12 @@
+{
+  "name": "一叶故事",
+  "version": "1.1.0",
+  "entry": "一叶故事.html",
+  "skill": "storyleaf/SKILL.md",
+  "offline": true,
+  "network": "user-triggered AI only",
+  "apiReady": true,
+  "media": "original SVG storyboard sketches; image prompts and matching video storyboards",
+  "examples": 16,
+  "styles": 6
+}
