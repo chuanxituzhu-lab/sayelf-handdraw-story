@@ -14,6 +14,12 @@ A schema-first Codex skill for turning stories into consistent hand-drawn video 
 - [产品 README](storyleaf/README.md)
 - [独立 Skill](storyleaf/storyleaf/SKILL.md)
 
+### 手绘风格参考：风筝
+
+![手绘风格参考：风筝](storyleaf/示范案例/handdraw-kite-example.png)
+
+这张参考图用于说明留白、线条和暖色点睛的视觉方向；实际故事会依据自己的连续性锁重新生成角色、动物、器物与场景。
+
 ### 故事图片示范：最后一根稻草
 
 这组原创草图把一个故事拆成五个连续瞬间：负重前行 → 膝盖发颤 → 稻草落下 → 前腿弯曲 → 跪地余韵。图片和视频分镜使用同一组编号。
@@ -29,6 +35,12 @@ A schema-first Codex skill for turning stories into consistent hand-drawn video 
 | F005 · 跪地余韵 |
 |---|
 | ![F005 跪地余韵](storyleaf/完整Demo/独立草图/F005.svg) |
+
+### 连续故事总览（原创生成图）
+
+![最后一根稻草五帧连续故事图](storyleaf/完整Demo/last-straw-storyboard-v1.png)
+
+五帧总览图保持同一只骆驼、两只眼睛、同一套驮具、同一条沙路和同一光线，只推进动作与稻草状态。
 
 ## Illustrator 视觉导演插件
 

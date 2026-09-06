@@ -45,7 +45,7 @@ const STYLES = [
  {id:'S06',name:'黑白寓言',tag:'纯粹 · 隐喻 · 张力',ink:'#262626',accent:'#b6b6b6',paper:'#fffef8',width:3.5,description:'纯黑钢笔与白纸，大胆轮廓和局部黑块，物体比重形成隐喻，单一视觉焦点，不使用渐变。'}
 ];
 const EXAMPLES = [
- {title:'最后一根稻草',text:'骆驼背着沉重的货物，在沙路上缓慢前行。每走一步，膝盖都微微发颤。一根金色稻草从货堆上方落下。稻草落在绳结旁，骆驼的前腿终于弯了下去。骆驼跪在地上，那根稻草仍安静地停在最上面。'},
+ {title:'最后一根稻草',text:'骆驼背着沉重的货物，在沙路上缓慢前行。每走一步，膝盖都微微发颤。一根金色稻草从货堆上方落下。稻草落在绳结旁，骆驼的前腿终于弯了下去。骆驼跪在地上，那根稻草仍安静地停在绳结旁。'},
  {title:'风停以后',text:'女孩握着红色风筝线，站在山坡上。风突然停了，风筝缓缓落进草地。女孩蹲下，把断开的竹骨接好。傍晚风又来了，她没有奔跑，只把风筝轻轻举起。'},
  {title:'错过末班车',text:'青年跑到车站，末班车刚刚离开。青年低头看见长椅上遗落的蓝色手套。一个老人沿着路灯走回来，四处张望。青年举起手套，老人笑着点头。两个人坐在长椅上，等远处的天慢慢亮起。'},
  {title:'纸船的旅程',text:'孩子用旧信纸折了一只小船。雨水把纸船带出院门。纸船在树枝旁被卡住。孩子找来细枝，轻轻推开障碍。纸船漂到阳光里，信纸上的墨迹渐渐展开。'},
@@ -137,7 +137,7 @@ function sketchSVG(frame,index,styleId='S01',cover=false){
  const x=210+Math.min(index,5)*14;
  const sun=`<circle cx="655" cy="88" r="30" fill="${s.accent}" stroke="none"/><path d="M95 307 Q330 294 735 310" fill="none" opacity=".4"/>`;
  let figure='';
- if(/骆驼/.test(t)){
+ if(/骆驼|稻草|绳结|货堆|膝盖/.test(t)){
  const down=/弯|跪|倒/.test(t);figure=`<g transform="translate(245 ${down?25:0})"><path d="M0 198 Q-5 131 40 145 Q50 85 84 136 Q114 94 144 147 L186 159 Q207 151 205 119 L209 67 Q225 47 252 63 L263 78 L241 90 L232 166 Q222 205 182 204 Z" fill="${s.accent}"/><path d="M27 200 L${down?'6 252 L64':'21 260 L43'} 260 M73 204 L78 260 L101 260 M150 205 L${down?'128 249 L189':'151 260 L174'} 260 M0 163 Q-25 168-25 192" fill="none"/><circle cx="230" cy="71" r="3" fill="${s.ink}"/><circle cx="240" cy="71" r="3" fill="${s.ink}"/><rect x="27" y="92" width="121" height="51" rx="8" fill="${s.paper}"/><path d="M40 92 L42 143 M94 92 L98 143 M20 122 L155 122" fill="none"/><path d="M86 ${/落下|上方/.test(t)?47:84} l56 -14 m-47 11 l6 -12 m8 8 l7 -13" stroke="${s.accent}" stroke-width="5"/></g>`;
  }else if(/蝴蝶|茧/.test(t)){
  figure=`<path d="M180 265 Q370 190 588 106" fill="none"/><path d="M333 197 Q355 93 393 173 Q444 102 452 176 Q453 243 399 201 Q366 261 351 213Z" fill="${s.accent}"/><path d="M394 177 L400 213 M394 179 L382 164 M396 179 L405 165" fill="none"/>`;
