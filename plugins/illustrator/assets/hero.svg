@@ -1,0 +1,33 @@
+<svg viewBox="0 0 1200 480" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI',system-ui,sans-serif">
+  <defs>
+    <style>
+      .ink  { stroke:#1a1a1a; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; }
+      .noln { fill:none; stroke:#1a1a1a; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; }
+      .thin { fill:none; stroke:#1a1a1a; stroke-width:3.5; stroke-linecap:round; stroke-linejoin:round; }
+    </style>
+  </defs>
+  <rect width="1200" height="480" fill="#FBF3E4"/>
+  <circle cx="930" cy="150" r="120" fill="#FFD23F" opacity="0.30"/>
+  <g transform="translate(250,110)">
+    <g transform="translate(0,230)"><rect width="150" height="110" fill="#FF6B35" class="ink"/><path d="M0 40 H150 M75 0 V40" class="thin"/></g>
+    <g transform="translate(12,130)"><rect width="150" height="110" fill="#4ECDC4" class="ink"/><path d="M0 40 H150 M75 0 V40" class="thin"/></g>
+    <g transform="translate(-6,32)"><rect width="150" height="110" fill="#FFD23F" class="ink"/><path d="M0 40 H150 M75 0 V40" class="thin"/></g>
+    <g transform="translate(24,-58) rotate(11)"><rect width="150" height="108" fill="#E63946" class="ink"/><path d="M0 40 H150 M75 0 V40" class="thin"/></g>
+    <g transform="translate(206,-150) rotate(24)"><rect width="118" height="86" fill="#5B8DEF" class="ink"/><path d="M0 32 H118 M59 0 V32" class="thin"/></g>
+    <path d="M352 -128 l30 -30 M376 -96 l34 -22 M360 -62 l38 -12" class="thin"/>
+  </g>
+  <g transform="translate(230,250)">
+    <path d="M60 150 q-14 -70 20 -104 q26 -26 8 -52" class="noln"/>
+    <circle cx="86" cy="-24" r="26" fill="#FBF3E4" class="ink"/>
+    <path d="M60 150 l-30 74 M60 150 l26 76" class="noln"/>
+    <path d="M22 226 l-20 4 M92 226 l22 2" class="noln"/>
+    <path d="M74 30 q-30 -6 -44 -30" class="noln"/>
+    <path d="M96 8 q60 -30 118 -66" class="noln"/>
+    <path d="M208 -62 l16 -8 M210 -56 l18 2 M212 -48 l14 10" class="thin"/>
+  </g>
+  <text x="640" y="228" fill="#1a1a1a" font-size="52" font-weight="800" letter-spacing="-1">sayelf-illustrator</text>
+  <text x="642" y="276" fill="#E63946" font-size="25" font-weight="700">Compile one feeling into one image</text>
+  <text x="642" y="312" fill="#1a1a1a" font-size="18" opacity="0.72">high-vibrancy hand-drawn · anti-decay prompt · closed loop</text>
+  <text x="642" y="372" fill="#1a1a1a" font-size="18" font-style="italic" opacity="0.85">"It's never one box — it's reaching for more when</text>
+  <text x="642" y="398" fill="#1a1a1a" font-size="18" font-style="italic" opacity="0.85">you're already carrying too much."</text>
+</svg>

@@ -6,6 +6,8 @@ Version reviewed: v0.1.0 maintenance candidate
 
 Evidence source: repository inspection at commit `1128e69`
 
+Addendum 2026-09-06: the optional `plugins/illustrator/` visual-director module and the `storyleaf/` customer WebUI are now included behind the frozen Core boundary. This review's claims about Core stability remain limited to the planning contracts; provider execution still requires explicit user action and is not part of the Core evidence.
+
 ## Validation Summary
 
 The repository previously contained only empty placeholders for its skill, schemas, rules, and style profile. No generated-project corpus, rendered videos, runtime implementation, or 30-day observation log was present. Claims of production stability therefore cannot yet be substantiated from repository evidence.

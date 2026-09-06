@@ -1,0 +1,13 @@
+# 本地生成物与 Python 缓存
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+out/
+out*/
+
+# 本地密钥与环境文件
+.env
+.env.*
+*.key
+secrets*

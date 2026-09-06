@@ -30,6 +30,17 @@ A schema-first Codex skill for turning stories into consistent hand-drawn video 
 |---|
 | ![F005 跪地余韵](storyleaf/完整Demo/独立草图/F005.svg) |
 
+## Illustrator 视觉导演插件
+
+`plugins/illustrator/` 将 `sayelf-illustrator` 的可复用能力接入故事 Core：动作 + 道具 + 痕迹证据装配、高饱和手绘风格矩阵、多 Provider 路由，以及出图后焦点物一致性校验。它保持为可替换插件，不改变 Core 的故事结构与连续性契约。
+
+- [视觉导演 Skill](plugins/illustrator/SKILL.md)
+- [风格矩阵](plugins/illustrator/references/style-matrix.md)
+- [离线连续故事桥接器](plugins/illustrator/scripts/story_to_prompts.py)
+- [插件说明](plugins/illustrator/README.md)
+
+桥接器读取 `storyleaf/` 或 `examples/story-sequence/` 的 JSON，输出同编号的图片提示词与视频分镜；默认不联网，只有执行 `execute.py` 或 `loop.py` 并提供用户自己的密钥时才调用 Provider。
+
 ## Repository contract
 
 - `SKILL.md` — skill entry point and frozen product boundary.
@@ -58,6 +69,7 @@ Run the executable continuity tests with Node.js 20 or newer:
 npm test
 npm run validate:example
 npm run continuity:example
+python -m unittest discover -s plugins/illustrator/tests -v
 npm run web
 ```
 

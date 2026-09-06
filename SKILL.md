@@ -20,6 +20,10 @@ Produce a deterministic planning package before any image or video generation.
 
 Use `rules/visual_director_rules.yaml` for composition and continuity decisions. Use `styles/warm_handdraw_story_v1.yaml` only when a warm, tactile hand-drawn treatment matches the request.
 
+## Optional visual director plugin
+
+When a provider-ready image prompt or image consistency check is needed, use `plugins/illustrator/SKILL.md` and its `scripts/assemble_prompt.py`, `scripts/verify.py`, or `scripts/story_to_prompts.py`. The plugin consumes the Core's stable subject, prop, action, trace, frame IDs, and ratio; it must not re-plan the story or silently change the frame count. `story_to_prompts.py` is offline and keeps image IDs and video IDs in lockstep.
+
 ## Boundaries
 
 - Preserve the supplied story's meaning, chronology, and named identities.
@@ -28,4 +32,5 @@ Use `rules/visual_director_rules.yaml` for composition and continuity decisions.
 - Allow shot size, composition, visible subjects, and purposeful motion to change without treating them as identity drift.
 - Flag uncertain creative choices for human review instead of silently expanding the story.
 - Return planning data only. Rendering, model selection, publishing, and platform-specific export are outside this skill.
+- Keep visual-provider execution behind the optional `plugins/illustrator/` boundary; the Core remains provider-neutral and can be verified without network access.
 - Treat Codex, Claude Code, WorkBuddy, and other AI tools as optional harness plugins; never make one provider part of the core contract.
