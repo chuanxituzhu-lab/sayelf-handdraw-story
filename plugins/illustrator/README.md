@@ -9,6 +9,8 @@
   一台 AI 插画导演 · 高饱和手绘 · 防衰减 Prompt · 出图一致性闭环
 </p>
 
+<p align="center"><a href="https://github.com/chuanxituzhu-lab/sayelf-handdraw-story">返回统一仓库 sayelf-handdraw-story</a></p>
+
 <p align="center">
   <a href="#快速上手">快速上手</a> ·
   <a href="#它解决什么">它解决什么</a> ·
@@ -128,7 +130,7 @@ python plugins/illustrator/scripts/story_to_prompts.py \
 ## 目录结构
 
 ```
-sayelf-illustrator/
+plugins/illustrator/
 ├── SKILL.md                     # 导演手册（六步工作流）
 ├── assets/hero.svg              # 首页插画（本系统风格自示范）
 ├── references/style-matrix.md   # 五档风格库
