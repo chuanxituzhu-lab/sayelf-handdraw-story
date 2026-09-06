@@ -1,6 +1,7 @@
 {
   "name": "一叶故事",
   "version": "1.1.0",
+  "repository": "https://github.com/chuanxituzhu-lab/sayelf-handdraw-story",
   "entry": "一叶故事.html",
   "skill": "storyleaf/SKILL.md",
   "offline": true,

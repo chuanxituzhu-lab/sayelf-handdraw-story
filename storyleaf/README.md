@@ -2,6 +2,8 @@
 
 把点子或文章，变成可修改的连续故事分镜。
 
+GitHub 仓库：[sayelf-handdraw-story](https://github.com/chuanxituzhu-lab/sayelf-handdraw-story)
+
 ## 三步开始
 1. 解压全部文件，双击「一叶故事.html」，用桌面浏览器打开。不用注册、安装或联网。
 2. 写文字、粘贴文章，或选择一个示范。选喜欢的画风，点「展开我的故事」。
