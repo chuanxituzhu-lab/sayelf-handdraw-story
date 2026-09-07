@@ -4,6 +4,12 @@
 
 GitHub 仓库：[sayelf-handdraw-story](https://github.com/chuanxituzhu-lab/sayelf-handdraw-story)
 
+## 最新下载
+- [下载 GitHub 最新版本（main 分支 ZIP）](https://github.com/chuanxituzhu-lab/sayelf-handdraw-story/archive/refs/heads/main.zip)
+- [查看最新更新记录](https://github.com/chuanxituzhu-lab/sayelf-handdraw-story/commits/main)
+
+下载后进入 `storyleaf` 文件夹，双击「一叶故事.html」即可使用。
+
 ## 三步开始
 1. 解压全部文件，双击「一叶故事.html」，用桌面浏览器打开。不用注册、安装或联网。
 2. 写文字、粘贴文章，或选择一个示范。选喜欢的画风，点「展开我的故事」。

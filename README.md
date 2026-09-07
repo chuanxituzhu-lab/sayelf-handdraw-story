@@ -14,6 +14,13 @@ A schema-first Codex skill for turning stories into consistent hand-drawn video 
 - [产品 README](storyleaf/README.md)
 - [独立 Skill](storyleaf/storyleaf/SKILL.md)
 
+### 最新下载
+
+- [下载最新版本（main 分支 ZIP）](https://github.com/chuanxituzhu-lab/sayelf-handdraw-story/archive/refs/heads/main.zip)
+- [查看最新更新记录](https://github.com/chuanxituzhu-lab/sayelf-handdraw-story/commits/main)
+
+下载后进入 `storyleaf` 文件夹，双击 `一叶故事.html` 即可使用。
+
 ### 手绘风格参考：风筝
 
 ![手绘风格参考：风筝](storyleaf/示范案例/handdraw-kite-example.png)
