@@ -28,9 +28,9 @@ A schema-first Codex skill for turning stories into consistent hand-drawn video 
 
 ### 默认主角 2：D 潮汐守望者（极简版）
 
-![D 潮汐守望者极简模型表](storyleaf/示范案例/character-d-default-2-ultra-simple-v1.png)
+![D 潮汐守望者极简模型表](storyleaf/示范案例/character-d-default-2-ultra-simple-v2.png)
 
-圆头、两只点状眼睛、靛蓝三角披风、玉绿色简化靴和中国古代刀币形玉坠组成固定身份；跑、跳、蹲、伸手、转身等复杂动作只改变姿势与道具状态。场景可以自由切换，刀币玉坠始终保持弯曲方向、大小与胸前高度。
+光头、两只点状眼睛、纯色高饱和靛蓝三角披风、明亮玉绿色简化靴和中国古代刀币形玉坠组成固定身份，底色统一为暖象牙；不使用渐变或额外色相。跑、跳、蹲、伸手、转身等复杂动作只改变姿势与道具状态。场景可以自由切换，刀币玉坠始终保持弯曲方向、大小与胸前高度。
 
 ### 故事图片示范：最后一根稻草
 
