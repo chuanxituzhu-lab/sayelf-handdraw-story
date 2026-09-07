@@ -6,13 +6,15 @@ A schema-first Codex skill for turning stories into consistent hand-drawn video 
 
 `v0.1.0` Core contract + Storyleaf Lite 1.1.0 + optional Illustrator visual-director plugin. The repository defines planning contracts and visual-direction rules; image/video generation remains provider-side. The local WebUI can display provider-returned image and video previews without exposing hidden project JSON.
 
-## Storyleaf Lite 1.1.0
+## SAYELF STORYLEAF Lite 1.1.0
 
 `storyleaf/` 是面向普通用户的独立故事生成产品：输入一句灵感或一篇文章，按故事复杂度自动拆分连续帧；每张图片与一个视频分镜严格对应。它提供预览窗口、沉浸式手绘回放、人物与道具连续性锁、SVG/PNG 图片出口和视频分镜出口，并支持 9:16、3:4、16:9、1:1 画幅。
 
-- [打开故事生成器](storyleaf/一叶故事.html)
+- [打开 SAYELF STORYLEAF](storyleaf/一叶故事.html)
 - [产品 README](storyleaf/README.md)
 - [独立 Skill](storyleaf/storyleaf/SKILL.md)
+
+![SAYELF STORYLEAF 图标](storyleaf/sayelf-storyleaf-icon.png)
 
 ### 最新下载
 

@@ -1,8 +1,10 @@
-# 一叶故事 1.1
+# SAYELF STORYLEAF 1.1
 
 把点子或文章，变成可修改的连续故事分镜。
 
 GitHub 仓库：[sayelf-handdraw-story](https://github.com/chuanxituzhu-lab/sayelf-handdraw-story)
+
+![SAYELF STORYLEAF 图标](sayelf-storyleaf-icon.png)
 
 ## 最新下载
 - [下载 GitHub 最新版本（main 分支 ZIP）](https://github.com/chuanxituzhu-lab/sayelf-handdraw-story/archive/refs/heads/main.zip)
