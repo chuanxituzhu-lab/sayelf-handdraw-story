@@ -2,6 +2,18 @@
 
 把点子或文章，变成可修改的连续故事分镜。
 
+## 中英文与工作流更新 / Language and workflow
+
+右上角「中文 / English」切换操作界面、预览控件、校验提示和导出标题；原文、已写好的故事与提示词内容保持原语言，不自动翻译或发送到外部服务。
+
+每次有效修改保留本次页面内的版本。可点「恢复上一版」找回前一次结果；更改输入后也可恢复最近的有效故事。导出前检查图片与视频的编号、数量和故事格式。检查通过只表示结构有效，仍需人工检查故事性和画面连续性。改动顺序、合并镜头或修改连续性后清除旧 AI 媒体，避免错配。
+
+Use **中文 / English** to switch controls, validation messages and export headings without changing your story. Story prose and prompts retain their original language. **Restore previous version** recovers an accepted session revision. Export checks validate matching image/shot IDs and structure; human review is still needed for story and visual continuity.
+
+工作记录只在当前页面内存中，可通过「工作记录」下载留档；刷新后不会自动恢复。请用「保存故事」保存可重新打开的项目 JSON。语言选择也只在本次页面有效。
+
+Session history is local and can be downloaded for review. Before refreshing, use **Save story** to keep a project JSON that can be reopened. Work records are audit files, not project imports. Language choice resets when the page reloads.
+
 GitHub 仓库：[sayelf-handdraw-story](https://github.com/chuanxituzhu-lab/sayelf-handdraw-story)
 
 ![SAYELF STORYLEAF 图标](sayelf-storyleaf-icon.png)

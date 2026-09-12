@@ -8,6 +8,10 @@ A schema-first Codex skill for turning stories into consistent hand-drawn video 
 
 ## SAYELF STORYLEAF Lite 1.1.0
 
+2026-09-12 更新：支持 **中文 / English** 操作界面切换、有效版本恢复、本地工作记录及导出前校验。切换语言保留故事原文；格式通过仍需人工确认故事与画面连续性。工作记录仅保留在页面会话，刷新前请保存故事。
+
+Chinese/English controls, session revision recovery, local work records and validated exports are now available. Switching languages preserves story text. Save your story before refreshing; structural validation does not replace visual review.
+
 `storyleaf/` 是面向普通用户的独立故事生成产品：输入一句灵感或一篇文章，按故事复杂度自动拆分连续帧；每张图片与一个视频分镜严格对应。它提供预览窗口、沉浸式手绘回放、人物与道具连续性锁、SVG/PNG 图片出口和视频分镜出口，并支持 9:16、3:4、16:9、1:1 画幅。
 
 - [打开 SAYELF STORYLEAF](storyleaf/一叶故事.html)
