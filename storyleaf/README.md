@@ -2,6 +2,14 @@
 
 把点子或文章，变成可修改的连续故事分镜。
 
+## 选择主角 / Choose a protagonist
+
+在画风上方选择「默认主角」「主角1」或「主角2」：分别为 C 云朵机械师、D 潮汐守望者、A 暖巾女孩。选择同步到封面预览、逐帧草图、绘制回放、SVG/PNG 和图片/视频提示词；人物造型与配色固定，场景与动作随故事发展。动物、植物保持原文主体，不会被替换成人物。
+
+故事文件保存所选角色，重新打开或恢复上一版时一并恢复。更换主角会清除旧 AI 媒体，并丢弃尚未返回的旧生成结果。旧故事没有角色字段时使用默认主角，原文和自填约定保留。
+
+Choose **Default** (Cloud mechanic), **Character 1** (Tide keeper) or **Character 2** (Scarf girl) above the style cards. The selection follows previews, sketches, drawing playback, exports and saved stories. Fixed character colors are independent of scene styles. Animal and plant subjects retain their identities. Switching character invalidates previous generated media.
+
 ## 中英文与工作流更新 / Language and workflow
 
 右上角「中文 / English」切换操作界面、预览控件、校验提示和导出标题；原文、已写好的故事与提示词内容保持原语言，不自动翻译或发送到外部服务。
@@ -55,13 +63,13 @@ GitHub 仓库：[sayelf-handdraw-story](https://github.com/chuanxituzhu-lab/saye
 
 圆头、两只点状眼睛、线条四肢、钴蓝围裙和橙色扳手标记组成固定身份；跑、跳、蹲、伸手、转身等复杂动作只改变姿势与道具状态。选定 C 后，可在不同室内外场景复用同一角色。
 
-## 默认主角 2：D 潮汐守望者（极简版）
+## 主角1：D 潮汐守望者（极简版）
 
 ![D 潮汐守望者极简模型表](示范案例/character-d-default-2-ultra-simple-v3.png)
 
 光头、两只点状眼睛、纯色高饱和靛蓝三角披风、暖象牙简化靴和战国刀币形铜锈色挂坠组成固定身份，底色统一为暖象牙。挂坠保留方首、弧背、浅凹刃、出廓边、窄柄双纵弦纹和末端环首；不使用圆牌、玉佩、金色或渐变。跑、跳、蹲、伸手、转身等复杂动作只改变姿势与道具状态。场景可以自由切换，刀币挂坠始终保持方向、大小与胸前高度。
 
-### 默认主角 3：A 暖巾女孩（极简版）
+### 主角2：A 暖巾女孩（极简版）
 
 ![A 暖巾女孩极简模型表](示范案例/character-a-default-3-ultra-simple-v3.png)
 

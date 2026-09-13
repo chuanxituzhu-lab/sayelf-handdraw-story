@@ -8,6 +8,8 @@ A schema-first Codex skill for turning stories into consistent hand-drawn video 
 
 ## SAYELF STORYLEAF Lite 1.1.0
 
+2026-09-13 更新：画风上方新增三款可选主角——**默认主角：C 云朵机械师；主角1：D 潮汐守望者；主角2：A 暖巾女孩**。选择同步到草图、预览、图片/视频提示词及保存的故事；支持中英文切换和版本恢复。动物故事保留原主体，人物配色不随场景画风变化。
+
 2026-09-12 更新：支持 **中文 / English** 操作界面切换、有效版本恢复、本地工作记录及导出前校验。切换语言保留故事原文；格式通过仍需人工确认故事与画面连续性。工作记录仅保留在页面会话，刷新前请保存故事。
 
 Chinese/English controls, session revision recovery, local work records and validated exports are now available. Switching languages preserves story text. Save your story before refreshing; structural validation does not replace visual review.
@@ -39,13 +41,13 @@ Chinese/English controls, session revision recovery, local work records and vali
 
 圆头、两只点状眼睛、线条四肢、钴蓝围裙和橙色扳手标记组成固定身份；跑、跳、蹲、伸手、转身等复杂动作只改变姿势与道具状态。选定 C 后，可在不同室内外场景复用同一角色。
 
-### 默认主角 2：D 潮汐守望者（极简版）
+### 主角1：D 潮汐守望者（极简版）
 
 ![D 潮汐守望者极简模型表](storyleaf/示范案例/character-d-default-2-ultra-simple-v3.png)
 
 光头、两只点状眼睛、纯色高饱和靛蓝三角披风、暖象牙简化靴和战国刀币形铜锈色挂坠组成固定身份，底色统一为暖象牙。挂坠保留方首、弧背、浅凹刃、出廓边、窄柄双纵弦纹和末端环首；不使用圆牌、玉佩、金色或渐变。跑、跳、蹲、伸手、转身等复杂动作只改变姿势与道具状态。场景可以自由切换，刀币挂坠始终保持方向、大小与胸前高度。
 
-### 默认主角 3：A 暖巾女孩（极简版）
+### 主角2：A 暖巾女孩（极简版）
 
 ![A 暖巾女孩极简模型表](storyleaf/示范案例/character-a-default-3-ultra-simple-v3.png)
 
