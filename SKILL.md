@@ -18,6 +18,8 @@ Produce a deterministic planning package before any image or video generation.
 7. For a sequence, run `node interfaces/cli/index.mjs continuity <current.json> --previous <previous.json>` and resolve every reported drift before rendering.
 8. For guided planning, use the local WebUI; keep its structured project state backstage and expose only readable summaries to the user.
 
+The WebUI and Storyleaf share one `SAYELF_MOTION` runtime layer backed by GSAP 3.15.0. Call its `reveal()`, `draw()`, `animate()`, or `stop()` methods when motion is needed; do not add a second animation foundation to a story, style, or harness module. It owns timing, cleanup, and reduced-motion handling only. Story planning, continuity, frames, and media exports remain independent of the renderer. If GSAP is unavailable, the local CSS fallback keeps the interface usable.
+
 Use `rules/visual_director_rules.yaml` for composition and continuity decisions. Use `styles/warm_handdraw_story_v1.yaml` only when a warm, tactile hand-drawn treatment matches the request.
 
 ## Optional visual director plugin

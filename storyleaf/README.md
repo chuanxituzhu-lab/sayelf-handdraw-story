@@ -18,6 +18,12 @@ Choose **Default** (Cloud mechanic), **Character 1** (Tide keeper) or **Characte
 
 Use **中文 / English** to switch controls, validation messages and export headings without changing your story. Story prose and prompts retain their original language. **Restore previous version** recovers an accepted session revision. Export checks validate matching image/shot IDs and structure; human review is still needed for story and visual continuity.
 
+## 共享动效能力 / Shared motion capability
+
+绘制回放、卡片渐入和预览切换共用 `SAYELF_MOTION` 动效层；需要动效时直接调用这一层，不在各模块重复设计底座。它内置 GSAP 3.15.0，负责时序、清理和减少动画偏好；GSAP 不可用时回退到原生 CSS。GSAP 只在本地执行，不接收故事、提示词、媒体或密钥，也不是新的 Skill。许可说明见 `vendor/GSAP-NOTICE.txt`。
+
+The drawing replay, card reveal and preview transition use one shared `SAYELF_MOTION` layer. Call it when motion is needed instead of rebuilding animation foundations in each module. The bundled GSAP 3.15.0 runtime owns timing, cleanup and reduced-motion handling, with a native CSS fallback. It runs locally, receives no story, prompt, media or key, and is not a new Skill. See `vendor/GSAP-NOTICE.txt` for the license notice.
+
 工作记录只在当前页面内存中，可通过「工作记录」下载留档；刷新后不会自动恢复。请用「保存故事」保存可重新打开的项目 JSON。语言选择也只在本次页面有效。
 
 Session history is local and can be downloaded for review. Before refreshing, use **Save story** to keep a project JSON that can be reopened. Work records are audit files, not project imports. Language choice resets when the page reloads.
@@ -110,7 +116,7 @@ GitHub 仓库：[sayelf-handdraw-story](https://github.com/chuanxituzhu-lab/saye
 点「AI 生成图片 / 视频」打开设置。没有 AI Harness 时，可填写自己的 OpenAI-compatible 接口、模型和本次密钥；支持文生图、文生视频和图生视频。只有点击「开始生成」才会发出请求，密钥不会写入故事 JSON、导出文件或日志。视频接口的字段可能因供应商不同而变化，若返回图片或视频 URL，页面会自动放入预览窗口；不识别的返回格式会明确报错。
 
 ## 图片和视频出口是什么
-- **SVG/PNG**：页面本地绘制的分镜草图，可独立下载。点击「预览窗口」放大查看，点击「绘制」可看 4 秒逐笔动画；用于节奏与风格示意，画面细节以文字为准。
+- **SVG/PNG**：页面本地绘制的分镜草图，可独立下载。点击「预览窗口」放大查看，点击「绘制」可看逐笔动画；播放由共享 `SAYELF_MOTION` 层驱动，用于节奏与风格示意，画面细节以文字为准。
 - **图片制作清单**：逐帧完整指令，交给现有生图工具生成最终图片。不是已渲染的 AI 图片。
 - **视频分镜**：每帧的动作、运镜、时长、衔接、声音、画幅，以及对应图片编号。不是 MP4。
 - **分镜表 CSV**：可用表格软件打开。

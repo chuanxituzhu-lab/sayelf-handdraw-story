@@ -7,6 +7,12 @@
   "skill": "storyleaf/SKILL.md",
   "offline": true,
   "network": "user-triggered AI only",
+  "motion": {
+    "capability": "SAYELF_MOTION",
+    "renderer": "GSAP 3.15.0",
+    "fallback": "CSS",
+    "skill": false
+  },
   "apiReady": true,
   "media": "original SVG storyboard sketches; image prompts and matching video storyboards",
   "examples": 16,

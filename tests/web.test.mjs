@@ -21,6 +21,17 @@ test('WebUI and health endpoint are served locally', () => fixture(async (base) 
   assert.match(await page.text(), /图片故事连续性/);
 }));
 
+test('WebUI exposes the shared GSAP motion capability locally', () => fixture(async (base) => {
+  const page = await (await fetch(base)).text();
+  assert.match(page, /vendor\/gsap\.min\.js/);
+  assert.match(page, /motion\.js/);
+  const [gsap, motion] = await Promise.all([fetch(`${base}/vendor/gsap.min.js`), fetch(`${base}/motion.js`)]);
+  assert.equal(gsap.status, 200);
+  assert.equal(motion.status, 200);
+  assert.match(await gsap.text(), /GSAP 3\.15\.0/);
+  assert.match(await motion.text(), /SAYELF_MOTION/);
+}));
+
 test('validate API returns PASS for the bundled project', () => fixture(async (base) => {
   const response = await fetch(`${base}/api/validate`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ project: read('shot-01.json') }) });
   assert.deepEqual(await response.json(), { status: 'PASS', issues: [] });

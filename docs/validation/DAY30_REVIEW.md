@@ -1,5 +1,7 @@
 # Day 30 Final Review
 
+Addendum 2026-09-16: Storyleaf and the local WebUI now share a bundled GSAP 3.15.0 motion layer. The layer is a renderer capability, not a Skill; it owns timing, cleanup, and reduced-motion handling, while the story Core remains renderer-neutral. This increment was validated with the existing browser and repository checks plus a focused motion capability check.
+
 Review date: 2026-08-21
 
 Version reviewed: v0.1.0 maintenance candidate

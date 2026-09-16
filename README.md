@@ -14,6 +14,10 @@ A schema-first Codex skill for turning stories into consistent hand-drawn video 
 
 Chinese/English controls, session revision recovery, local work records and validated exports are now available. Switching languages preserves story text. Save your story before refreshing; structural validation does not replace visual review.
 
+### Shared motion capability
+
+The Storyleaf page and local WebUI use one `SAYELF_MOTION` layer backed by bundled GSAP 3.15.0. Drawing replay, card reveal, and preview transitions call this shared capability directly; timing, cleanup, and `prefers-reduced-motion` handling do not get reimplemented in each feature. The layer has a native CSS fallback and runs locally without receiving story text, prompts, media, or keys. It is a runtime capability, not a new Skill. See [`GSAP-NOTICE.txt`](interfaces/web/public/vendor/GSAP-NOTICE.txt) for the license notice.
+
 `storyleaf/` 是面向普通用户的独立故事生成产品：输入一句灵感或一篇文章，按故事复杂度自动拆分连续帧；每张图片与一个视频分镜严格对应。它提供预览窗口、沉浸式手绘回放、人物与道具连续性锁、SVG/PNG 图片出口和视频分镜出口，并支持 9:16、3:4、16:9、1:1 画幅。
 
 - [打开 SAYELF STORYLEAF](storyleaf/一叶故事.html)
@@ -102,6 +106,7 @@ Chinese/English controls, session revision recovery, local work records and vali
 - `core/continuity.mjs` — deterministic project, reference, timeline, and continuity checks.
 - `interfaces/cli/index.mjs` — local `validate` and `continuity` commands.
 - `interfaces/web/` — private local WebUI and JSON API using Node.js standard libraries.
+- `interfaces/web/public/motion.js` — shared `SAYELF_MOTION` runtime layer; `vendor/gsap.min.js` is the pinned GSAP 3.15.0 renderer with a CSS fallback.
 - `examples/story-sequence/` — two consecutive project snapshots.
 - `tests/` — Node built-in regression tests.
 - `docs/validation/DAY30_REVIEW.md` — evidence-based maintenance review.
